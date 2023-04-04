@@ -2,19 +2,11 @@ const { Schema, model, Types } = require("mongoose");
 const { isEmail } = require("validator");
 
 const User = new Schema({
-  gender: String,
   username: {
-    first: String,
-    last: String,
+    firstname: String,
+    lastname: String,
   },
-  password: String,
-  photoUrl: String,
-  locations: String,
-  password: {
-    type: String,
-    required: [true, "Please enter an password"],
-    minlength: [6, "Minimum password length is 6 character"],
-  },
+  
   email: {
     type: String,
     required: true,
@@ -23,6 +15,8 @@ const User = new Schema({
     validate: [isEmail, "Please enter a valid email"],
   },
   roles: { type: Object, required: true},
+  badges: Object,
+
 });
 const userModel = model("User", User);
 module.exports = { userModel };
