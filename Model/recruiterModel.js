@@ -1,12 +1,14 @@
 const { Schema, model, Types } = require("mongoose");
 const { isEmail } = require("validator");
 
-const User = new Schema({
+const Recruiter = new Schema({
   username: {
     firstname: String,
     lastname: String,
   },
-  
+  organizationName: {
+    type: String,
+  },
   email: {
     type: String,
     required: true,
@@ -14,9 +16,12 @@ const User = new Schema({
     unique: true,
     validate: [isEmail, "Please enter a valid email"],
   },
-  roles: { type: Object, required: true},
+  emailConfirmed: { type: Boolean, default: false },
+  roles: { type: Object, required: true },
   badges: Object,
-
+  personalInformations: Object,
+  jobsDone: Number,
 });
-const userModel = model("User", User);
-module.exports = { userModel };
+
+const recruiterModel = model("Recruiter", Recruiter);
+module.exports = { recruiterModel };
