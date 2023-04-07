@@ -17,7 +17,7 @@ const Recruiter = new Schema({
     validate: [isEmail, "Please enter a valid email"],
   },
   emailConfirmed: { type: Boolean, default: false },
-  roles: { type: Object, required: true },
+  roles: { type: Object, default: { Candidate: 301 } },
   badges: Object,
   personalInformations: Object,
   jobsDone: Number,

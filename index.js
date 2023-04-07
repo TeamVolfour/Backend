@@ -6,7 +6,7 @@ const { userRouter } = require("./Routes/userRoutes");
 require("dotenv").config();
 
 const app = express();
-const port = process.env.PORT || 4040;
+const port = process.env.PORT || 9000;
 
 app.use(express.json(), cors());
 app.use(userRouter)
@@ -24,3 +24,4 @@ app.listen(port, async () => {
     console.error(error);
   }
 });
+

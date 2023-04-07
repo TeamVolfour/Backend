@@ -1,4 +1,4 @@
-const { userModel } = require("../Model/candidateModel");
+const { userModel, candidateModel } = require("../Model/candidateModel");
 
 const handleErrors = (err) => {
   console.log(err.message, err.code);
@@ -12,8 +12,8 @@ const handleErrors = (err) => {
   return errors;
 };
 
-exports.signUpCheck = async (req, res, next) => {
-  const isAlready = await userModel.findOne({ email: req.body.email });
+exports.signUpCheckCandidate = async (req, res, next) => {
+  const isAlready = await candidateModel.findOne({ email: req.body.email });
 
   console.log(req.body);
   try {
@@ -34,8 +34,31 @@ exports.signUpCheck = async (req, res, next) => {
   }
 };
 
+exports.signUpCheckRecruiter = async (req, res, next) => {
+  const isAlready = await candidateModel.findOne({ email: req.body.email });
+
+  try {
+    if (!req.body.organization && !req.body.username) {
+      return res.status(401).json("Please enter username or organziation name");
+    }
+    if (req.body.username) {
+      if (!req.body.username.firstname) {
+        res.status(401).json("First name is required");
+        return;
+      } else if (!req.body.username.lastname) {
+        res.status(401).json("Last name is required");
+        return;
+      }
+    }
+    next();
+  } catch (err) {
+    const errors = handleErrors(err);
+    res.status(401).json({ errors });
+  }
+};
+
 exports.loginCheck = async (req, res, next) => {
-  const user = await userModel.findOne({ email: req.body.email });
+  const user = await candidateModel.findOne({ email: req.body.email });
   try {
     if (user && user.emailConfirmed) {
       next();

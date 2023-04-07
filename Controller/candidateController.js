@@ -22,7 +22,8 @@ exports.createUser = async (req, res) => {
     };
     const user = await new candidateModel(newUser).save();
     const confirmToken = confirmEmail(user);
-    res.send({ confirmationToken: confirmToken });
+    console.log(confirmToken)
+    return res.send({ confirmationToken: confirmToken });
   } catch (error) {
     return res.status(400).json(error);
   }
@@ -31,7 +32,8 @@ exports.login = async (req, res) => {
   const user = await candidateModel.findOne({ email: req.body.email });
 };
 exports.confirmationCompleted = async (req, res) => {
-  const confirmToken = req.params.token;
+  const confirmToken = req.params.id
+
   console.log(req.headers, "headers");
   try {
     if (confirmToken) {
@@ -45,7 +47,7 @@ exports.confirmationCompleted = async (req, res) => {
           console.log(user);
           user.emailConfirmed = true;
           await candidateModel.findByIdAndUpdate(response.user, user);
-          return res.send("Your email has confirmed.");
+          return res.redirect("http://localhost:3000/confirmation/" + confirmToken);
         }
       );
     } else {

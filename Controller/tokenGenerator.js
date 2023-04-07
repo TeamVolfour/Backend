@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { sendToMailConfiramtion } = require("../functions/sendEmail");
+var uniqid = require('uniqid');
 
 exports.userToken = (props) => {
 
@@ -47,27 +48,23 @@ exports.oneTimePassword = (props) => {
 
 exports.confirmEmail = (props) => {
     // async email
-    console.log(props, 'confirmEmail')
-    try {
-        jwt.sign(
-            {
-                user: props.id,
-            },
-            'emailSecret123',
-            {
-                expiresIn: '5m',
-            },
-            (err, emailToken) => {
-                const url = `http://localhost:4040/confirmation/${emailToken}`;
-                const dispatch = { email: props.email, name: props.username.firstname, url: url }
-                sendToMailConfiramtion(dispatch)
-                return emailToken
-            },
-        );
+    const id = uniqid()
+    const port = process.env.PORT || 9000
+    const emailConfirm = jwt.sign(
+        {
+            user: props.id,
+            id: id,
+        },
+        process.env.ACCESS_TOKEN_SECRET || 'emailSecret123',
+        {
+            expiresIn: '5m',
+        },
+    );
+    const url = `http://localhost:${port}/confirmation/${emailConfirm}`;
+    const dispatch = { email: props.email, name: props.username.firstname, id: id, url: url }
+    sendToMailConfiramtion(dispatch)
 
-    } catch (err) {
-        console.log(err)
-    }
 
+    return emailConfirm
 
 }
