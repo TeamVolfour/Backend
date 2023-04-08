@@ -1,7 +1,8 @@
 const express = require("express"),
   cors = require("cors");
 const { connect } = require("./config/db/db");
-const { userRouter } = require("./Routes/userRoutes");
+const { candidateRouter } = require("./Routes/candidateRoutes");
+const { recruiterRouter } = require("./Routes/recruiterRoutes");
 
 require("dotenv").config();
 
@@ -9,11 +10,14 @@ const app = express();
 const port = process.env.PORT || 9000;
 
 app.use(express.json(), cors());
-app.use(userRouter)
-connect()
+app.use(candidateRouter);
+app.use(recruiterRouter);
+connect();
 
 app.get("/", (req, res) => {
-  res.send(`Welcome to the Volfour backend - You on the http://localhost:${port}/`);
+  res.send(
+    `Welcome to the Volfour backend - You on the http://localhost:${port}/`
+  );
 });
 
 app.listen(port, async () => {
@@ -24,4 +28,3 @@ app.listen(port, async () => {
     console.error(error);
   }
 });
-

@@ -4,16 +4,16 @@ const { sendValidation, sendToEmail } = require("../functions/sendEmail");
 const { confirmEmail } = require("./tokenGenerator");
 const jwt = require("jsonwebtoken");
 
-exports.getUsers = async (req, res) => {
+exports.getCandidates = async (req, res) => {
   const result = await candidateModel.find({});
   res.send(result);
 };
-exports.getUser = async (req, res) => {
+exports.getCandidate = async (req, res) => {
   const result = await candidateModel.findById(req.params.id);
   res.send(result);
 };
 
-exports.createUser = async (req, res) => {
+exports.createCandidate = async (req, res) => {
   try {
     const newUser = {
       username: req.body.username,
@@ -22,17 +22,17 @@ exports.createUser = async (req, res) => {
     };
     const user = await new candidateModel(newUser).save();
     const confirmToken = confirmEmail(user);
-    console.log(confirmToken)
+    console.log(confirmToken);
     return res.send({ confirmationToken: confirmToken });
   } catch (error) {
     return res.status(400).json(error);
   }
 };
-exports.login = async (req, res) => {
+exports.loginAsCandidate = async (req, res) => {
   const user = await candidateModel.findOne({ email: req.body.email });
 };
 exports.confirmationCompleted = async (req, res) => {
-  const confirmToken = req.params.id
+  const confirmToken = req.params.id;
 
   console.log(req.headers, "headers");
   try {
@@ -47,7 +47,9 @@ exports.confirmationCompleted = async (req, res) => {
           console.log(user);
           user.emailConfirmed = true;
           await candidateModel.findByIdAndUpdate(response.user, user);
-          return res.redirect("http://localhost:3000/confirmation/" + confirmToken);
+          return res.redirect(
+            "http://localhost:3000/confirmation/" + confirmToken
+          );
         }
       );
     } else {
@@ -57,6 +59,6 @@ exports.confirmationCompleted = async (req, res) => {
     res.send(err);
   }
 };
-exports.deleteAllUser = async (req, res) => {
+exports.deleteAllCandidates = async (req, res) => {
   res.send(await candidateModel.deleteMany());
 };

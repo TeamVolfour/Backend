@@ -1,4 +1,5 @@
 const { userModel, candidateModel } = require("../Model/candidateModel");
+const { recruiterModel } = require("../Model/recruiterModel");
 
 const handleErrors = (err) => {
   console.log(err.message, err.code);
@@ -17,11 +18,8 @@ exports.signUpCheckCandidate = async (req, res, next) => {
 
   console.log(req.body);
   try {
-    if (!req.body.username.firstname) {
+    if (!req.body.username) {
       res.status(401).json("First name is required");
-      return;
-    } else if (!req.body.username.lastname) {
-      res.status(401).json("Last name is required");
       return;
     } else if (isAlready) {
       res.status(400).send("That email is already registered");
@@ -35,20 +33,30 @@ exports.signUpCheckCandidate = async (req, res, next) => {
 };
 
 exports.signUpCheckRecruiter = async (req, res, next) => {
-  const isAlready = await candidateModel.findOne({ email: req.body.email });
+  const registeredEmail = await candidateModel.findOne({
+    email: req.body.email,
+  });
+  const registeredEmail2 = await recruiterModel.findOne({
+    email: req.body.email,
+  });
+  const registeredOrganization = await candidateModel.findOne({
+    organizationName: req.body.organization,
+  });
 
   try {
     if (!req.body.organization && !req.body.username) {
-      return res.status(401).json("Please enter username or organziation name");
-    }
-    if (req.body.username) {
-      if (!req.body.username.firstname) {
+      if (!req.body.username) {
         res.status(401).json("First name is required");
-        return;
-      } else if (!req.body.username.lastname) {
-        res.status(401).json("Last name is required");
-        return;
       }
+      if (!req.body.organization) {
+        return res
+          .status(401)
+          .json("Please enter username or organziation name");
+      }
+    } else if (registeredEmail || registeredEmail2) {
+      return res.status(400).send("That email is already registered");
+    } else if (registeredOrganization) {
+      return res.status(400).send("That organization is already registered");
     }
     next();
   } catch (err) {

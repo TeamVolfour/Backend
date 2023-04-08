@@ -2,12 +2,10 @@ const { Schema, model, Types } = require("mongoose");
 const { isEmail } = require("validator");
 
 const Recruiter = new Schema({
-  username: {
-    firstname: String,
-    lastname: String,
-  },
+  username: { type: String, required: true },
   organizationName: {
     type: String,
+    required: true,
   },
   email: {
     type: String,
@@ -20,7 +18,7 @@ const Recruiter = new Schema({
   roles: { type: Object, default: { Candidate: 301 } },
   badges: Object,
   personalInformations: Object,
-  jobsDone: Number,
+  jobsOrganised: Number,
 });
 
 const recruiterModel = model("Recruiter", Recruiter);
