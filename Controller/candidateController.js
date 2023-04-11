@@ -28,10 +28,33 @@ exports.createCandidate = async (req, res) => {
     return res.status(400).json(error);
   }
 };
+
+exports.loginWithFirebaseAuth = async (req, res) => {
+  try {
+    const fbId = await candidateModel.findOne({
+      facebookId: req.body.facebookId,
+    });
+    console.log(req.body);
+    if (!fbId) {
+      const newUser = {
+        username: req.body.username,
+        email: req.body.email,
+        facebookId: req.body.facebookId,
+        photoUrl: req.body.image,
+      };
+      await new candidateModel(newUser).save();
+      return res.send("Fb created and connected successfully");
+    } else {
+      return res.send("Fb connected successfully");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 exports.loginAsCandidate = async (req, res) => {
   const user = await candidateModel.findOne({ email: req.body.email });
 };
-exports.confirmationCompleted = async (req, res) => {
+exports.cVerifyCompleted = async (req, res) => {
   const confirmToken = req.params.id;
 
   console.log(req.headers, "headers");
@@ -43,10 +66,10 @@ exports.confirmationCompleted = async (req, res) => {
         async function (err, response) {
           if (err) return res.send(err);
 
-          let user = await candidateModel.findById(response.user);
+          let user = await candidateModel.findById(response.id);
           console.log(user);
           user.emailConfirmed = true;
-          await candidateModel.findByIdAndUpdate(response.user, user);
+          await candidateModel.findByIdAndUpdate(response.id, user);
           return res.redirect(
             "http://localhost:3000/confirmation/" + confirmToken
           );

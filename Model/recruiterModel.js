@@ -2,10 +2,9 @@ const { Schema, model, Types } = require("mongoose");
 const { isEmail } = require("validator");
 
 const Recruiter = new Schema({
-  username: { type: String, required: true },
+  username: { type: String },
   organizationName: {
     type: String,
-    required: true,
   },
   email: {
     type: String,
@@ -14,8 +13,13 @@ const Recruiter = new Schema({
     unique: true,
     validate: [isEmail, "Please enter a valid email"],
   },
+  photoUrl: {
+    type: String,
+    default:
+      "https://i.pinimg.com/736x/8b/16/7a/8b167af653c2399dd93b952a48740620.jpg",
+  },
   emailConfirmed: { type: Boolean, default: false },
-  roles: { type: Object, default: { Candidate: 301 } },
+  roles: { type: Object, default: { recruiter: 301 } },
   badges: Object,
   personalInformations: Object,
   jobsOrganised: Number,

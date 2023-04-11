@@ -1,4 +1,4 @@
-const { Schema, model, Types } = require("mongoose");
+const { Schema, model, Types, SchemaTypes } = require("mongoose");
 const { isEmail } = require("validator");
 
 const Candidate = new Schema({
@@ -11,8 +11,14 @@ const Candidate = new Schema({
     validate: [isEmail, "Please enter a valid email"],
   },
   emailConfirmed: { type: Boolean, default: false },
-  roles: { type: Object, default: { Candidate: 200 } },
+  roles: { type: Object, default: { candidate: 200 } },
   badges: Object,
+  photoUrl: {
+    type: String,
+    default:
+      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png",
+  },
+  facebookId: String,
   personalInformations: Object,
   jobsDone: Number,
 });

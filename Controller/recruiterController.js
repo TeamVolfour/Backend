@@ -32,9 +32,9 @@ exports.createRecruiter = async (req, res) => {
 exports.loginAsRecruiter = async (req, res) => {
   const user = await recruiterModel.findOne({ email: req.body.email });
 };
-exports.confirmationCompleted = async (req, res) => {
-  const confirmToken = req.params.token;
-  console.log(req.headers, "headers");
+exports.rVerifyCompleted = async (req, res) => {
+  const confirmToken = req.params.id;
+  console.log(confirmToken);
   try {
     if (confirmToken) {
       jwt.verify(
@@ -42,12 +42,14 @@ exports.confirmationCompleted = async (req, res) => {
         "emailSecret123",
         async function (err, response) {
           if (err) return res.send(err);
-
-          let user = await recruiterModel.findById(response.user);
+          console.log(response, "resposne");
+          let user = await recruiterModel.findById(response.id);
           console.log(user);
           user.emailConfirmed = true;
-          await recruiterModel.findByIdAndUpdate(response.user, user);
-          return res.send("Your email has confirmed.");
+          await recruiterModel.findByIdAndUpdate(response.id, user);
+          return res.redirect(
+            "http://localhost:3000/confirmation/" + confirmToken
+          );
         }
       );
     } else {

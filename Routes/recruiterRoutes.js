@@ -5,6 +5,7 @@ const {
   createRecruiter,
   deleteAllRecruiter,
   confirmationCompleted,
+  rVerifyCompleted,
 } = require("../Controller/recruiterController");
 const {
   signUpCheckRecruiter,
@@ -17,7 +18,7 @@ router
   .get("/recruiter", getRecruiter)
   .post("/signup/recruiter", signUpCheckRecruiter, createRecruiter)
   .post("/login", loginCheck)
-  .get("/confirmation/:id", confirmationCompleted)
+  .get("/recruiter/confirmation/:id", rVerifyCompleted)
   .delete("/recruiters", deleteAllRecruiter);
 
 exports.recruiterRouter = router;
