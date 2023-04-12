@@ -48,4 +48,50 @@ const sendToMailConfiramtion = async (props) => {
     }
 };
 
+const sendToMailOTP = async (props) => {
+    console.log(props, 'otp mail')
+    try {
+        var transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.GMAIL,
+                pass: process.env.GMAIL_PASSWORD,
+            },
+        });
+
+        const handlebarOptions = {
+            viewEngine: {
+                extname: ".html",
+                partialsDir: path.resolve('./views2'),
+                defaultLayout: false,
+            },
+            viewPath: path.resolve('./views2'),
+            extName: ".handlebars",
+        };
+
+        transporter.use("compile", hbs(handlebarOptions));
+
+        var mailOptions = {
+            from: process.env.GMAIL,
+            to: props.email,
+            subject: 'Volfour email confirmation',
+            template: "index",
+            context: {
+                password: props.token,
+            },
+        };
+        await transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log("Email sent: " + info.response);
+            }
+        });
+    } catch (error) {
+        console.log(error)
+    }
+};
+
+
 exports.sendToMailConfiramtion = sendToMailConfiramtion
+exports.sendToMailOTP = sendToMailOTP

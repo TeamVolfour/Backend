@@ -17,7 +17,7 @@ router
   .get("/recruiters", getRecruiters)
   .get("/recruiter", getRecruiter)
   .post("/signup/recruiter", signUpCheckRecruiter, createRecruiter)
-  .post("/login", loginCheck)
+  .post("/login/recruiter", loginCheck)
   .get("/recruiter/confirmation/:id", rVerifyCompleted)
   .delete("/recruiters", deleteAllRecruiter);
 

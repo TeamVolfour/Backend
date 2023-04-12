@@ -1,13 +1,12 @@
 const jwt = require("jsonwebtoken");
-const { sendToMailConfiramtion } = require("../functions/sendEmail");
+const { sendToMailConfiramtion, sendToMailOTP } = require("../functions/sendEmail");
 var uniqid = require("uniqid");
 
 exports.userToken = (props) => {
   const accessToken = jwt.sign(
     {
       email: props.email,
-      password: props.password,
-      isVerified: props.isVerified,
+      emailConfirmed: props.emailConfirmed,
       username: { first: props.username.first, last: props.username.last },
       roles: props.roles,
     },
@@ -23,8 +22,8 @@ exports.oneTimePassword = (props) => {
   const bcrypt = require("bcrypt");
 
   var options = {
-    min: 000001,
-    max: 999999,
+    min: 0000001,
+    max: 9999999,
     integer: true,
   };
   const customId = rn(options);
@@ -36,12 +35,12 @@ exports.oneTimePassword = (props) => {
   const validTokenId = jwt.sign(
     {
       _id: props._id,
-      token: hashedToken,
+      token: hashedToken, 
     },
     "defaultSecure",
     { expiresIn: "5m" }
   );
-  sendValidation({ email: props.email, token: customId });
+  sendToMailOTP({ email: props.email, token: customId });
   return validTokenId;
 };
 

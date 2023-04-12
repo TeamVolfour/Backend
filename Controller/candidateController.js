@@ -1,7 +1,7 @@
 const { redirect } = require("react-router-dom");
 const { userModel, candidateModel } = require("../Model/candidateModel");
 const { sendValidation, sendToEmail } = require("../functions/sendEmail");
-const { confirmEmail } = require("./tokenGenerator");
+const { confirmEmail, oneTimePassword } = require("./tokenGenerator");
 const jwt = require("jsonwebtoken");
 
 exports.getCandidates = async (req, res) => {
@@ -29,6 +29,8 @@ exports.createCandidate = async (req, res) => {
   }
 };
 
+
+
 exports.loginWithFirebaseAuth = async (req, res) => {
   try {
     const fbId = await candidateModel.findOne({
@@ -53,6 +55,15 @@ exports.loginWithFirebaseAuth = async (req, res) => {
 };
 exports.loginAsCandidate = async (req, res) => {
   const user = await candidateModel.findOne({ email: req.body.email });
+  try {
+    if (user) {
+      const otpToken = oneTimePassword({ id: user._id, email: user.email })
+      res.json({ otpToken: otpToken })
+    }
+  } catch (error) {
+    console.log(error)
+  }
+
 };
 exports.cVerifyCompleted = async (req, res) => {
   const confirmToken = req.params.id;

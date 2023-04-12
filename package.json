@@ -9,6 +9,7 @@
     "nodemailer": "^6.9.1",
     "nodemailer-express-handlebars": "^6.1.0",
     "nodemon": "^2.0.22",
+    "random-number": "^0.0.9",
     "react-router-dom": "^6.10.0",
     "uniqid": "^5.4.0",
     "validator": "^13.9.0"

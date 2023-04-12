@@ -6,6 +6,7 @@ const {
   deleteAllCandidates,
   cVerifyCompleted,
   loginWithFirebaseAuth,
+  loginAsCandidate,
 } = require("../Controller/candidateController");
 const {
   signUpCheck,
@@ -20,7 +21,7 @@ router
   .get("/candidate", getCandidate)
   .post("/signup/candidate", signUpCheckCandidate, createCandidate)
   .post("/login/fb/candidate", facebookLoginCheck, loginWithFirebaseAuth)
-  .post("/login", loginCheck)
+  .post("/login", loginCheck, loginAsCandidate)
   .get("/candidate/confirmation/:id", cVerifyCompleted)
   .delete("/candidates", deleteAllCandidates);
 

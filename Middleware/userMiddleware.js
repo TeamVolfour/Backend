@@ -68,16 +68,22 @@ exports.facebookLoginCheck = async (req, res, next) => {
   const registeredEmail = await candidateModel.findOne({
     email: req.body.email,
   });
+  console.log(registeredEmail)
+
   if (req.body.facebookId) {
-    if (!registeredEmail) {
+    if (registeredEmail.facebookId == req.body.facebookId) {
       next();
+
     } else {
       return res.status(401).json("This email is already registered");
     }
+
   } else {
     return res.send(401).json("Facebook login failed");
   }
 };
+
+
 exports.loginCheck = async (req, res, next) => {
   const user = await candidateModel.findOne({ email: req.body.email });
   try {
