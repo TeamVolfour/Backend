@@ -6,8 +6,8 @@ const {
   deleteAllCandidates,
   cVerifyCompleted,
   loginWithFirebaseAuth,
-  loginAsCandidate,
 } = require("../Controller/candidateController");
+const { login, otpCheck } = require("../Controller/commonController");
 const {
   signUpCheck,
   loginCheck,
@@ -21,7 +21,8 @@ router
   .get("/candidate", getCandidate)
   .post("/signup/candidate", signUpCheckCandidate, createCandidate)
   .post("/login/fb/candidate", facebookLoginCheck, loginWithFirebaseAuth)
-  .post("/login", loginCheck, loginAsCandidate)
+  .post("/login", loginCheck, login)
+  .post("/otpCheck", otpCheck)
   .get("/candidate/confirmation/:id", cVerifyCompleted)
   .delete("/candidates", deleteAllCandidates);
 

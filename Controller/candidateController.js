@@ -3,6 +3,7 @@ const { userModel, candidateModel } = require("../Model/candidateModel");
 const { sendValidation, sendToEmail } = require("../functions/sendEmail");
 const { confirmEmail, oneTimePassword } = require("./tokenGenerator");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 exports.getCandidates = async (req, res) => {
   const result = await candidateModel.find({});
@@ -29,8 +30,6 @@ exports.createCandidate = async (req, res) => {
   }
 };
 
-
-
 exports.loginWithFirebaseAuth = async (req, res) => {
   try {
     const fbId = await candidateModel.findOne({
@@ -53,18 +52,34 @@ exports.loginWithFirebaseAuth = async (req, res) => {
     console.log(error);
   }
 };
-exports.loginAsCandidate = async (req, res) => {
-  const user = await candidateModel.findOne({ email: req.body.email });
-  try {
-    if (user) {
-      const otpToken = oneTimePassword({ id: user._id, email: user.email })
-      res.json({ otpToken: otpToken })
-    }
-  } catch (error) {
-    console.log(error)
-  }
 
+exports.otpCheck = async (req, re, next) => {
+  const accessToken = req.headers.otptoken;
+  console.log(req.headers.otptoken, "headers");
+  try {
+    if (accessToken) {
+      jwt.verify(
+        accessToken,
+        process.env.TOKEN_SECRET || "otpSecret123",
+        async function (err, response) {
+          console.log("otp check", response, req.body.otp);
+          if (err) return res.send(err);
+          const isMatched = bcrypt.compareSync(req.body.otp, response.token);
+          if (isMatched) {
+            next();
+          } else {
+            res.status(404).send("Wrong one time password");
+          }
+        }
+      );
+    } else {
+      res.status(404).send("No token found");
+    }
+  } catch (err) {
+    res.send(err);
+  }
 };
+
 exports.cVerifyCompleted = async (req, res) => {
   const confirmToken = req.params.id;
 
@@ -73,7 +88,7 @@ exports.cVerifyCompleted = async (req, res) => {
     if (confirmToken) {
       jwt.verify(
         confirmToken,
-        "emailSecret123",
+        process.env.TOKEN_SECRET || "emailSecret123",
         async function (err, response) {
           if (err) return res.send(err);
 
@@ -93,6 +108,7 @@ exports.cVerifyCompleted = async (req, res) => {
     res.send(err);
   }
 };
+
 exports.deleteAllCandidates = async (req, res) => {
   res.send(await candidateModel.deleteMany());
 };

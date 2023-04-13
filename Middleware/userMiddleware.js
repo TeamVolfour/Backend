@@ -1,3 +1,4 @@
+const { userToken } = require("../Controller/tokenGenerator");
 const { userModel, candidateModel } = require("../Model/candidateModel");
 const { recruiterModel } = require("../Model/recruiterModel");
 
@@ -68,26 +69,68 @@ exports.facebookLoginCheck = async (req, res, next) => {
   const registeredEmail = await candidateModel.findOne({
     email: req.body.email,
   });
-  console.log(registeredEmail)
+  console.log(registeredEmail);
 
   if (req.body.facebookId) {
     if (registeredEmail.facebookId == req.body.facebookId) {
       next();
-
     } else {
       return res.status(401).json("This email is already registered");
     }
-
   } else {
     return res.send(401).json("Facebook login failed");
   }
 };
 
+exports.otpCheck = async (req, res, next) => {
+  const accessToken = req.headers.otptoken;
+  console.log(req.headers.otptoken, "headers");
+  try {
+    if (accessToken) {
+      jwt.verify(
+        accessToken,
+        process.env.TOKEN_SECRET || "otpSecret123",
+        async function (err, response) {
+          if (err) return res.send(err);
+          const isMatched = bcrypt.compareSync(req.body.otp, response.token);
+
+          if (isMatched) {
+            const candidate = await candidateModel.findById({
+              _id: response.token._id,
+            });
+            const recruiter = await candidateModel.findById({
+              _id: response.token._id,
+            });
+
+            if (candidate) {
+              const token = userToken(candidate);
+              return res.status(200).json(token);
+            }
+            if (recruiter) {
+              const token = userToken(recruiter);
+              return res.status(200).json(token);
+            }
+          } else {
+            res.status(404).send("Wrong one time password");
+          }
+        }
+      );
+    } else {
+      res.status(404).send("No token found");
+    }
+  } catch (err) {
+    res.send(err);
+  }
+};
 
 exports.loginCheck = async (req, res, next) => {
-  const user = await candidateModel.findOne({ email: req.body.email });
+  const candidate = await candidateModel.findOne({ email: req.body.email });
+  const recruiter = await recruiterModel.findOne({ email: req.body.email });
   try {
-    if (user && user.emailConfirmed) {
+    if (
+      (candidate && candidate.emailConfirmed) ||
+      (recruiter && recruiter.emailConfirmed)
+    ) {
       next();
     } else {
       res.status(401).send({ message: "Email not found" });

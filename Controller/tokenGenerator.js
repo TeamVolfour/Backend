@@ -1,5 +1,8 @@
 const jwt = require("jsonwebtoken");
-const { sendToMailConfiramtion, sendToMailOTP } = require("../functions/sendEmail");
+const {
+  sendToMailConfiramtion,
+  sendToMailOTP,
+} = require("../functions/sendEmail");
 var uniqid = require("uniqid");
 
 exports.userToken = (props) => {
@@ -10,7 +13,7 @@ exports.userToken = (props) => {
       username: { first: props.username.first, last: props.username.last },
       roles: props.roles,
     },
-    process.env.ACCESS_TOKEN_SECRET || "sercretKey129",
+    process.env.TOKEN_SECRET || "sercretKey129",
     { expiresIn: "2m" }
   );
   return accessToken;
@@ -34,13 +37,13 @@ exports.oneTimePassword = (props) => {
   console.log(hashedToken, "d");
   const validTokenId = jwt.sign(
     {
-      _id: props._id,
-      token: hashedToken, 
+      _id: props.id,
+      token: hashedToken,
     },
-    "defaultSecure",
+    process.env.TOKEN_SECRET || "otpSecret123",
     { expiresIn: "5m" }
   );
-  sendToMailOTP({ email: props.email, token: customId });
+  sendToMailOTP({ email: props.email, otp: customId });
   return validTokenId;
 };
 
@@ -53,7 +56,7 @@ exports.confirmEmail = (props) => {
     {
       id: props.id,
     },
-    process.env.ACCESS_TOKEN_SECRET || "emailSecret123",
+    process.env.TOKEN_SECRET || "emailSecret123",
     {
       expiresIn: "5m",
     }
