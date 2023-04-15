@@ -2,6 +2,7 @@ const { candidateModel } = require("../Model/candidateModel");
 const { recruiterModel } = require("../Model/recruiterModel");
 const { oneTimePassword, userToken } = require("./tokenGenerator");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 exports.login = async (req, res) => {
   const candidate = await candidateModel.findOne({ email: req.body.email });
@@ -41,19 +42,19 @@ exports.otpCheck = async (req, res) => {
 
           if (isMatched) {
             const candidate = await candidateModel.findById({
-              _id: response.token._id,
+              _id: response._id,
             });
-            const recruiter = await candidateModel.findById({
-              _id: response.token._id,
+            const recruiter = await recruiterModel.findById({
+              _id: response._id,
             });
             console.log(candidate, recruiter);
             if (candidate) {
               const token = userToken(candidate);
-              return res.status(200).json(token);
+              return res.status(200).json({ accessToken: token });
             }
             if (recruiter) {
               const token = userToken(recruiter);
-              return res.status(200).json(token);
+              return res.status(200).json({ accessToken: token });
             }
           } else {
             res.status(404).send("Wrong one time password");

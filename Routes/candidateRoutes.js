@@ -5,7 +5,8 @@ const {
   createCandidate,
   deleteAllCandidates,
   cVerifyCompleted,
-  loginWithFirebaseAuth,
+  loginWithFacebook,
+  loginWithGoogle,
 } = require("../Controller/candidateController");
 const { login, otpCheck } = require("../Controller/commonController");
 const {
@@ -13,14 +14,17 @@ const {
   loginCheck,
   signUpCheckCandidate,
   facebookLoginCheck,
+  googleLoginCheck,
 } = require("../Middleware/userMiddleware");
+
 const router = express.Router();
 
 router
   .get("/candidates", getCandidates)
   .get("/candidate", getCandidate)
   .post("/signup/candidate", signUpCheckCandidate, createCandidate)
-  .post("/login/fb/candidate", facebookLoginCheck, loginWithFirebaseAuth)
+  .post("/login/fb/candidate", facebookLoginCheck, loginWithFacebook)
+  .post("/login/google/candidate", googleLoginCheck, loginWithGoogle)
   .post("/login", loginCheck, login)
   .post("/otpCheck", otpCheck)
   .get("/candidate/confirmation/:id", cVerifyCompleted)

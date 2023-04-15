@@ -30,11 +30,11 @@ exports.createCandidate = async (req, res) => {
   }
 };
 
-exports.loginWithFirebaseAuth = async (req, res) => {
+exports.loginWithFacebook = async (req, res) => {
+  const fbId = await candidateModel.findOne({
+    facebookId: req.body.facebookId,
+  });
   try {
-    const fbId = await candidateModel.findOne({
-      facebookId: req.body.facebookId,
-    });
     console.log(req.body);
     if (!fbId) {
       const newUser = {
@@ -53,30 +53,26 @@ exports.loginWithFirebaseAuth = async (req, res) => {
   }
 };
 
-exports.otpCheck = async (req, re, next) => {
-  const accessToken = req.headers.otptoken;
-  console.log(req.headers.otptoken, "headers");
+exports.loginWithGoogle = async (req, res) => {
+  const googleId = await candidateModel.findOne({
+    googleId: req.body.googleId,
+  });
   try {
-    if (accessToken) {
-      jwt.verify(
-        accessToken,
-        process.env.TOKEN_SECRET || "otpSecret123",
-        async function (err, response) {
-          console.log("otp check", response, req.body.otp);
-          if (err) return res.send(err);
-          const isMatched = bcrypt.compareSync(req.body.otp, response.token);
-          if (isMatched) {
-            next();
-          } else {
-            res.status(404).send("Wrong one time password");
-          }
-        }
-      );
+    console.log(req.body);
+    if (!googleId) {
+      const newUser = {
+        username: req.body.username,
+        email: req.body.email,
+        googleId: req.body.googleId,
+        photoUrl: req.body.image,
+      };
+      await new candidateModel(newUser).save();
+      return res.send("Google created and connected successfully");
     } else {
-      res.status(404).send("No token found");
+      return res.send("Google connected successfully");
     }
-  } catch (err) {
-    res.send(err);
+  } catch (error) {
+    console.log(error);
   }
 };
 
