@@ -10,7 +10,7 @@ exports.userToken = (props) => {
     {
       email: props.email,
       emailConfirmed: props.emailConfirmed,
-      username: { first: props.username.first, last: props.username.last },
+      username: props.username,
       roles: props.roles,
     },
     process.env.TOKEN_SECRET || "sercretKey129",
@@ -40,7 +40,7 @@ exports.oneTimePassword = (props) => {
       _id: props.id,
       token: hashedToken,
     },
-    process.env.TOKEN_SECRET || "otpSecret123",
+    process.env.TOKEN_SECRET || "emailsecret123",
     { expiresIn: "5m" }
   );
   sendToMailOTP({ email: props.email, otp: customId });

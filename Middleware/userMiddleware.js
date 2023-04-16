@@ -16,15 +16,21 @@ const handleErrors = (err) => {
 
 exports.signUpCheckCandidate = async (req, res, next) => {
   const isAlready = await candidateModel.findOne({ email: req.body.email });
-
+  const alreadyUsername = await candidateModel.findOne({ username: req.body.username })
+  const alreadyUsernameRec = await recruiterModel.findOne({ username: req.body.username })
   console.log(req.body);
   try {
-    if (!req.body.username) {
-      res.status(401).json("First name is required");
-      return;
+    if (!req.body.email) {
+      return res.status(401).json("Email is required");
+    }
+    else if (!req.body.username) {
+      return res.status(401).json("First name is required");
+
     } else if (isAlready) {
-      res.status(400).send("That email is already registered");
-      return;
+      return res.status(409).send("That email is already registered");
+
+    } else if (alreadyUsername || alreadyUsernameRec) {
+      return res.status(409).send("That username is already exists")
     }
     next();
   } catch (err) {
@@ -55,9 +61,9 @@ exports.signUpCheckRecruiter = async (req, res, next) => {
           .json("Please enter username or organziation name");
       }
     } else if (registeredEmail || registeredEmail2) {
-      return res.status(401).send("That email is already registered");
+      return res.status(409).send("That email is already registered");
     } else if (registeredOrganization) {
-      return res.status(401).send("That organization is already registered");
+      return res.status(409).send("That organization is already registered");
     }
 
     next();
@@ -75,10 +81,10 @@ exports.facebookLoginCheck = async (req, res, next) => {
     if (registeredEmail.facebookId == req.body.facebookId) {
       next();
     } else {
-      return res.status(401).json("This email is already registered");
+      return res.status(409).json("This email is already registered");
     }
   } else {
-    return res.send(401).json("Facebook login failed");
+    return res.send(409).json("Facebook login failed");
   }
 };
 

@@ -2,7 +2,7 @@ const { candidateModel } = require("../Model/candidateModel");
 const { recruiterModel } = require("../Model/recruiterModel");
 const { oneTimePassword, userToken } = require("./tokenGenerator");
 const bcrypt = require("bcrypt");
-
+const jwt = require("jsonwebtoken");
 exports.login = async (req, res) => {
   const candidate = await candidateModel.findOne({ email: req.body.email });
   const recruiter = await recruiterModel.findOne({ email: req.body.email });
@@ -32,31 +32,34 @@ exports.otpCheck = async (req, res) => {
   console.log(req.headers.otptoken, "headers");
   try {
     if (accessToken) {
+      console.log('what')
       jwt.verify(
         accessToken,
-        process.env.TOKEN_SECRET || "otpSecret123",
+        process.env.TOKEN_SECRET || "emailsecret123",
         async function (err, response) {
           if (err) return res.send(err);
           const isMatched = bcrypt.compareSync(req.body.otp, response.token);
 
           if (isMatched) {
+            console.log('matched')
+            console.log(response._id)
             const candidate = await candidateModel.findById({
-              _id: response.token._id,
+              _id: response._id,
             });
-            const recruiter = await candidateModel.findById({
-              _id: response.token._id,
+            const recruiter = await recruiterModel.findById({
+              _id: response._id,
             });
             console.log(candidate, recruiter);
             if (candidate) {
               const token = userToken(candidate);
-              return res.status(200).json(token);
+              return res.status(200).json({ accessToke: token });
             }
             if (recruiter) {
               const token = userToken(recruiter);
-              return res.status(200).json(token);
+              return res.status(200).json({ accessToke: token });
             }
           } else {
-            res.status(404).send("Wrong one time password");
+            res.status(403).send("Wrong one time password");
           }
         }
       );
