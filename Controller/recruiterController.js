@@ -29,9 +29,11 @@ exports.createRecruiter = async (req, res) => {
     return res.status(400).json(error);
   }
 };
+
 exports.loginAsRecruiter = async (req, res) => {
   const user = await recruiterModel.findOne({ email: req.body.email });
 };
+
 exports.rVerifyCompleted = async (req, res) => {
   const confirmToken = req.params.id;
   console.log(confirmToken);

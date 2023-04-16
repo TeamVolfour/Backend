@@ -27,10 +27,8 @@ exports.signUpCheckCandidate = async (req, res, next) => {
       return res.status(401).json("First name is required");
 
     } else if (isAlready) {
-      return res.status(409).send("That email is already registered");
-
-    } else if (alreadyUsername || alreadyUsernameRec) {
-      return res.status(409).send("That username is already exists")
+      res.status(409).send("That email is already registered");
+      return;
     }
     next();
   } catch (err) {
@@ -78,7 +76,7 @@ exports.facebookLoginCheck = async (req, res, next) => {
   console.log(registeredEmail);
 
   if (req.body.facebookId) {
-    if (registeredEmail.facebookId == req.body.facebookId) {
+    if (registeredEmai) {
       next();
     } else {
       return res.status(409).json("This email is already registered");
@@ -88,44 +86,28 @@ exports.facebookLoginCheck = async (req, res, next) => {
   }
 };
 
-exports.otpCheck = async (req, res, next) => {
-  const accessToken = req.headers.otptoken;
-  console.log(req.headers.otptoken, "headers");
-  try {
-    if (accessToken) {
-      jwt.verify(
-        accessToken,
-        process.env.TOKEN_SECRET || "otpSecret123",
-        async function (err, response) {
-          if (err) return res.send(err);
-          const isMatched = bcrypt.compareSync(req.body.otp, response.token);
-
-          if (isMatched) {
-            const candidate = await candidateModel.findById({
-              _id: response.token._id,
-            });
-            const recruiter = await candidateModel.findById({
-              _id: response.token._id,
-            });
-
-            if (candidate) {
-              const token = userToken(candidate);
-              return res.status(200).json(token);
-            }
-            if (recruiter) {
-              const token = userToken(recruiter);
-              return res.status(200).json(token);
-            }
-          } else {
-            res.status(404).send("Wrong one time password");
-          }
-        }
-      );
+exports.googleLoginCheck = async (req, res, next) => {
+  const registeredEmail = await candidateModel.findOne({
+    email: req.body.email,
+  });
+  const registeredEmail2 = await recruiterModel.findOne({
+    email: req.body.email,
+  });
+  console.log(req.body, registeredEmail.googleId);
+  if (req.body.googleId) {
+    if (!registeredEmail && !registeredEmail2) {
+      next();
     } else {
-      res.status(404).send("No token found");
+      if (registeredEmail.googleId) {
+        if (registeredEmail.googleId == req.body.googleId) {
+          next();
+        }
+      } else {
+        return res.status(409).json("This email is already registered");
+      }
     }
-  } catch (err) {
-    res.send(err);
+  } else {
+    return res.status(401).json("Google login failed");
   }
 };
 

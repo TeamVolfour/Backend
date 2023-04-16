@@ -52,11 +52,11 @@ exports.otpCheck = async (req, res) => {
             console.log(candidate, recruiter);
             if (candidate) {
               const token = userToken(candidate);
-              return res.status(200).json({ accessToke: token });
+              return res.status(200).json({ accessToken: token });
             }
             if (recruiter) {
               const token = userToken(recruiter);
-              return res.status(200).json({ accessToke: token });
+              return res.status(200).json({ accessToken: token });
             }
           } else {
             res.status(403).send("Wrong one time password");
