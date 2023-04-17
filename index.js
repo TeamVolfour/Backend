@@ -3,6 +3,9 @@ const express = require("express"),
 const { connect } = require("./config/db/db");
 const { candidateRouter } = require("./Routes/candidateRoutes");
 const { recruiterRouter } = require("./Routes/recruiterRoutes");
+const { jobPostRouter } = require("./Routes/jobPost.routes");
+const { JobCategoryModel } = require("./Model/jobCategory.model");
+const { jobCategoryRouter } = require("./Routes/jobCategory.routes");
 
 require("dotenv").config();
 
@@ -10,8 +13,7 @@ const app = express();
 const port = process.env.PORT || 9000;
 
 app.use(express.json(), cors());
-app.use(candidateRouter);
-app.use(recruiterRouter);
+app.use(candidateRouter, recruiterRouter, jobPostRouter, jobCategoryRouter);
 connect();
 
 app.get("/", (req, res) => {

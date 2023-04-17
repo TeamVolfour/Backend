@@ -73,16 +73,26 @@ exports.facebookLoginCheck = async (req, res, next) => {
   const registeredEmail = await candidateModel.findOne({
     email: req.body.email,
   });
+  const registeredEmail2 = await recruiterModel.findOne({
+    email: req.body.email,
+  });
   console.log(registeredEmail);
 
+  console.log(req.body, registeredEmail.googleId);
   if (req.body.facebookId) {
-    if (registeredEmai) {
+    if (!registeredEmail && !registeredEmail2) {
       next();
     } else {
-      return res.status(409).json("This email is already registered");
+      if (registeredEmail.facebookId) {
+        if (registeredEmail.facebookId == req.body.facebookId) {
+          next();
+        }
+      } else {
+        return res.status(409).json("This email is already registered");
+      }
     }
   } else {
-    return res.send(409).json("Facebook login failed");
+    return res.status(401).json("Facebook login failed");
   }
 };
 
