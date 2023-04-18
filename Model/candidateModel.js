@@ -2,8 +2,11 @@ const { Schema, model, Types, SchemaTypes } = require("mongoose");
 const { isEmail } = require("validator");
 
 const Candidate = new Schema({
-
-  username: { type: String, required: true },
+  username: {
+    type: String,
+    required: true,
+    minlength: [6, "Minimum username length is 6 character"],
+  },
   firstname: String,
   lastname: String,
   email: {

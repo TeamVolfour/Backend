@@ -16,18 +16,23 @@ const handleErrors = (err) => {
 
 exports.signUpCheckCandidate = async (req, res, next) => {
   const isAlready = await candidateModel.findOne({ email: req.body.email });
-  const alreadyUsername = await candidateModel.findOne({ username: req.body.username })
-  const alreadyUsernameRec = await recruiterModel.findOne({ username: req.body.username })
+  const alreadyUsername = await candidateModel.findOne({
+    username: req.body.username,
+  });
+  const alreadyUsernameRec = await recruiterModel.findOne({
+    username: req.body.username,
+  });
   console.log(req.body);
   try {
     if (!req.body.email) {
       return res.status(401).json("Email is required");
-    }
-    else if (!req.body.username) {
-      return res.status(401).json("First name is required");
-
+    } else if (!req.body.username) {
+      return res.status(401).json("Username is required");
     } else if (isAlready) {
       res.status(409).send("That email is already registered");
+      return;
+    } else if (alreadyUsername || alreadyUsernameRec) {
+      res.status(409).send("That username is already registered");
       return;
     }
     next();
@@ -52,8 +57,9 @@ exports.signUpCheckRecruiter = async (req, res, next) => {
     if (!req.body.organization && !req.body.username) {
       if (!req.body.username) {
         return res.status(401).json("Username is required");
-      }
-      if (!req.body.organization) {
+      } else if (!req.body.email) {
+        return res.status(401).json("Email is required");
+      } else if (!req.body.organization) {
         return res
           .status(401)
           .json("Please enter username or organziation name");
@@ -76,9 +82,8 @@ exports.facebookLoginCheck = async (req, res, next) => {
   const registeredEmail2 = await recruiterModel.findOne({
     email: req.body.email,
   });
-  console.log(registeredEmail);
+  console.log(registeredEmail, "info");
 
-  console.log(req.body, registeredEmail.googleId);
   if (req.body.facebookId) {
     if (!registeredEmail && !registeredEmail2) {
       next();

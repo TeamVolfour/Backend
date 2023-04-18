@@ -43,6 +43,7 @@ exports.loginWithFacebook = async (req, res) => {
         facebookId: req.body.facebookId,
         photoUrl: req.body.image,
       };
+      console.log(newUser);
       await new candidateModel(newUser).save();
       return res.send("Fb created and connected successfully");
     } else {
