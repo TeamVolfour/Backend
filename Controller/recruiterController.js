@@ -1,7 +1,7 @@
 const { redirect } = require("react-router-dom");
 const { userModel, candidateModel } = require("../Model/candidateModel");
 const { sendValidation, sendToEmail } = require("../functions/sendEmail");
-const { confirmEmail } = require("./tokenGenerator");
+const { confirmEmail, userToken } = require("./tokenGenerator");
 const jwt = require("jsonwebtoken");
 const { recruiterModel } = require("../Model/recruiterModel");
 
@@ -30,10 +30,6 @@ exports.createRecruiter = async (req, res) => {
   }
 };
 
-exports.loginAsRecruiter = async (req, res) => {
-  const user = await recruiterModel.findOne({ email: req.body.email });
-};
-
 exports.rVerifyCompleted = async (req, res) => {
   const confirmToken = req.params.id;
   console.log(confirmToken);
@@ -41,7 +37,7 @@ exports.rVerifyCompleted = async (req, res) => {
     if (confirmToken) {
       jwt.verify(
         confirmToken,
-        "emailSecret123",
+        process.env.TOKEN_SECRET || "emailSecret123",
         async function (err, response) {
           if (err) return res.send(err);
           console.log(response, "resposne");
@@ -61,6 +57,27 @@ exports.rVerifyCompleted = async (req, res) => {
     res.send(err);
   }
 };
+
+exports.tokenResponse = async (req, res) => {
+  console.log(req.body.id);
+  const user = await recruiterModel.findById(req.body.id);
+  try {
+    if (user) {
+      const token = userToken({
+        email: user.email,
+        username: user.username,
+        organization: user.organizationName,
+        roles: user.roles,
+        photoUrl: user.photoUrl,
+        id: user._id,
+      });
+      res.send({ accessToken: token });
+    }
+  } catch (err) {
+    res.status(400).send(err);
+  }
+};
+
 exports.deleteAllRecruiter = async (req, res) => {
   res.send(await recruiterModel.deleteMany());
 };

@@ -6,6 +6,7 @@ const {
   deleteAllRecruiter,
   confirmationCompleted,
   rVerifyCompleted,
+  tokenResponse,
 } = require("../Controller/recruiterController");
 const {
   signUpCheckRecruiter,

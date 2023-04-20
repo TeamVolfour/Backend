@@ -3,6 +3,7 @@ const { recruiterModel } = require("../Model/recruiterModel");
 const { oneTimePassword, userToken } = require("./tokenGenerator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 exports.login = async (req, res) => {
   const candidate = await candidateModel.findOne({ email: req.body.email });
   const recruiter = await recruiterModel.findOne({ email: req.body.email });
@@ -32,7 +33,7 @@ exports.otpCheck = async (req, res) => {
   console.log(req.headers.otptoken, "headers");
   try {
     if (accessToken) {
-      console.log('what')
+      console.log("what");
       jwt.verify(
         accessToken,
         process.env.TOKEN_SECRET || "emailsecret123",
@@ -41,8 +42,8 @@ exports.otpCheck = async (req, res) => {
           const isMatched = bcrypt.compareSync(req.body.otp, response.token);
 
           if (isMatched) {
-            console.log('matched')
-            console.log(response._id)
+            console.log("matched");
+            console.log(response._id);
             const candidate = await candidateModel.findById({
               _id: response._id,
             });
@@ -68,5 +69,36 @@ exports.otpCheck = async (req, res) => {
     }
   } catch (err) {
     res.send(err);
+  }
+};
+
+exports.tokenResponse = async (req, res) => {
+  console.log(req.body.id);
+  const recruiter = await recruiterModel.findById(req.body.id);
+  const candidate = await candidateModel.findById(req.body.id);
+
+  try {
+    if (recruiter) {
+      const token = userToken({
+        email: recruiter.email,
+        username: recruiter.username,
+        organization: recruiter.organizationName,
+        roles: recruiter.roles,
+        photoUrl: recruiter.photoUrl,
+        id: recruiter._id,
+      });
+      res.send({ accessToken: token });
+    } else {
+      const token = userToken({
+        email: candidate.email,
+        username: candidate.username,
+        roles: candidate.roles,
+        photoUrl: candidate.photoUrl,
+        id: candidate._id,
+      });
+      res.send({ accessToken: token });
+    }
+  } catch (err) {
+    res.status(400).send(err);
   }
 };

@@ -8,10 +8,13 @@ var uniqid = require("uniqid");
 exports.userToken = (props) => {
   const accessToken = jwt.sign(
     {
+      id: props.id,
       email: props.email,
+      organization: props.organizationName,
       emailConfirmed: props.emailConfirmed,
       username: props.username,
       roles: props.roles,
+      photoUrl: props.photoUrl,
     },
     process.env.TOKEN_SECRET || "sercretKey129",
     { expiresIn: "2m" }
@@ -58,7 +61,7 @@ exports.confirmEmail = (props) => {
     },
     process.env.TOKEN_SECRET || "emailSecret123",
     {
-      expiresIn: "5m",
+      expiresIn: "8m",
     }
   );
   if (props.roles.recruiter) {

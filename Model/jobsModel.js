@@ -8,9 +8,11 @@ const JobPost = new Schema({
   bannerImg: String,
   deadline: { type: Date, required: true },
   experience: String,
+  location: { type: String, required: true },
   tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
   creatorId: Schema.Types.ObjectId,
-  candidates: [{ type: Schema.Types.ObjectId, ref: "Candidate" }],
+  pendingCandidates: [{ type: Schema.Types.ObjectId, ref: "Candidate" }],
+  approvedCandidates: [{ type: Schema.Types.ObjectId, ref: "Candidate" }],
   createdAt: { type: Date, default: Date.now() },
 });
 
