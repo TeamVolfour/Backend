@@ -24,7 +24,8 @@ exports.createRecruiter = async (req, res) => {
     };
     const user = await new recruiterModel(newUser).save();
     const confirmToken = confirmEmail(user);
-    res.send({ confirmationToken: confirmToken });
+    // console.log(confirmToken);
+    return res.send({ confirmationToken: confirmToken });
   } catch (error) {
     return res.status(400).json(error);
   }
@@ -55,26 +56,6 @@ exports.rVerifyCompleted = async (req, res) => {
     }
   } catch (err) {
     res.send(err);
-  }
-};
-
-exports.tokenResponse = async (req, res) => {
-  console.log(req.body.id);
-  const user = await recruiterModel.findById(req.body.id);
-  try {
-    if (user) {
-      const token = userToken({
-        email: user.email,
-        username: user.username,
-        organization: user.organizationName,
-        roles: user.roles,
-        photoUrl: user.photoUrl,
-        id: user._id,
-      });
-      res.send({ accessToken: token });
-    }
-  } catch (err) {
-    res.status(400).send(err);
   }
 };
 

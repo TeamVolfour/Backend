@@ -6,7 +6,8 @@ exports.getAllJobs = async (req, res) => {
       .find({})
       .populate("pendingCandidates")
       .populate("approvedCandidates")
-      .populate("category");
+      .populate("category")
+      .populate("creatorId");
     res.send(result);
   } catch (error) {
     res.send(error);
@@ -18,7 +19,8 @@ exports.getSingleJob = async (req, res) => {
       .findById(req.params.id)
       .populate("pendingCandidates")
       .populate("approvedCandidates")
-      .populate("category");
+      .populate("category")
+      .populate("creator");
     res.send(result);
   } catch (error) {
     res.send(error);
@@ -29,9 +31,9 @@ exports.postJobs = async (req, res) => {
   try {
     const body = req.body;
     const result = await new jobPostModel(body).save();
-    res.send(result);
+    return res.send(result);
   } catch (error) {
-    res.send(400).json("Failed to post jobs");
+    res.status(400).send(error.message);
   }
 };
 exports.deleteJobPost = async (req, res) => {

@@ -57,19 +57,20 @@ exports.signUpCheckRecruiter = async (req, res, next) => {
     if (!req.body.organization && !req.body.username) {
       if (!req.body.username) {
         return res.status(401).json("Username is required");
-      } else if (!req.body.email) {
-        return res.status(401).json("Email is required");
       } else if (!req.body.organization) {
         return res
           .status(401)
           .json("Please enter username or organziation name");
       }
-    } else if (registeredEmail || registeredEmail2) {
+    } else if (!req.body.email) {
+      return res.status(401).json("Email is required");
+    } else if (registeredEmail2) {
       if (registeredEmail2.emailConfirmed == false) {
         console.log(registeredEmail2);
         await recruiterModel.findOneAndDelete({
           email: registeredEmail2.email,
         });
+
         return next();
       }
       return res.status(409).send("That email is already registered");

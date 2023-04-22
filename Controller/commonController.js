@@ -31,17 +31,17 @@ exports.login = async (req, res) => {
 exports.otpCheck = async (req, res) => {
   const accessToken = req.headers.otptoken;
   console.log(req.headers.otptoken, "headers");
+
   try {
     if (accessToken) {
-      console.log("what");
       jwt.verify(
         accessToken,
-        process.env.TOKEN_SECRET || "emailsecret123",
+        process.env.TOKEN_SECRET || "emailSecret123",
         async function (err, response) {
           if (err) return res.send(err);
-          const isMatched = bcrypt.compareSync(req.body.otp, response.token);
+          console.log(response.token);
 
-          if (isMatched) {
+          if (req.body.otp == response.token) {
             console.log("matched");
             console.log(response._id);
             const candidate = await candidateModel.findById({

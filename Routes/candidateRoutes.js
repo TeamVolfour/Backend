@@ -20,12 +20,13 @@ const {
   facebookLoginCheck,
   googleLoginCheck,
 } = require("../Middleware/userMiddleware");
+const { roleMiddleware } = require("../Middleware/role.middleware");
 
 const router = express.Router();
 
 router
-  .get("/candidates", getCandidates)
-  .get("/candidate", getCandidate)
+  .get("/candidates", roleMiddleware(401), getCandidates)
+  .get("/candidate", roleMiddleware(401), getCandidate)
   .post("/signup/candidate", signUpCheckCandidate, createCandidate)
   .post("/login/fb/candidate", facebookLoginCheck, loginWithFacebook)
   .post("/login/google/candidate", googleLoginCheck, loginWithGoogle)

@@ -28,22 +28,19 @@ exports.oneTimePassword = (props) => {
   const bcrypt = require("bcrypt");
 
   var options = {
-    min: 0000001,
-    max: 9999999,
+    min: 000001,
+    max: 999999,
     integer: true,
   };
   const customId = rn(options);
   console.log(customId);
 
-  const salt = bcrypt.genSaltSync(1);
-  const hashedToken = bcrypt.hashSync(String(customId), salt);
-  console.log(hashedToken, "d");
   const validTokenId = jwt.sign(
     {
       _id: props.id,
-      token: hashedToken,
+      token: customId,
     },
-    process.env.TOKEN_SECRET || "emailsecret123",
+    process.env.TOKEN_SECRET || "emailSecret123",
     { expiresIn: "5m" }
   );
   sendToMailOTP({ email: props.email, otp: customId });
@@ -51,7 +48,6 @@ exports.oneTimePassword = (props) => {
 };
 
 exports.confirmEmail = (props) => {
-  // async email
   const id = uniqid();
   var url;
   const port = process.env.PORT || 9000;
@@ -64,7 +60,7 @@ exports.confirmEmail = (props) => {
       expiresIn: "8m",
     }
   );
-  if (props.roles.recruiter) {
+  if (props.roles.recruiter || props.roles.admin) {
     url = `http://localhost:${port}/recruiter/confirmation/${emailConfirm}`;
   } else if (props.roles.candidate) {
     url = `http://localhost:${port}/candidate/confirmation/${emailConfirm}`;

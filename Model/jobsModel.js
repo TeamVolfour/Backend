@@ -10,7 +10,7 @@ const JobPost = new Schema({
   experience: String,
   location: { type: String, required: true },
   tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
-  creatorId: Schema.Types.ObjectId,
+  creator: { type: Schema.Types.ObjectId, ref: "Recruiter" },
   pendingCandidates: [{ type: Schema.Types.ObjectId, ref: "Candidate" }],
   approvedCandidates: [{ type: Schema.Types.ObjectId, ref: "Candidate" }],
   createdAt: { type: Date, default: Date.now() },
