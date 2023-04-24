@@ -17,7 +17,7 @@ exports.userToken = (props) => {
       photoUrl: props.photoUrl,
     },
     process.env.TOKEN_SECRET || "sercretKey129",
-    { expiresIn: "2m" }
+    { expiresIn: "1d" }
   );
   return accessToken;
 };
@@ -68,7 +68,8 @@ exports.confirmEmail = (props) => {
 
   const dispatch = {
     email: props.email,
-    name: props.username.firstname,
+    name: props.username,
+    organization: props.organizationName,
     id: id,
     url: url,
   };

@@ -9,12 +9,15 @@ exports.getRecruiters = async (req, res) => {
   const result = await recruiterModel.find({});
   res.send(result);
 };
+
 exports.getRecruiter = async (req, res) => {
   const result = await recruiterModel.findById(req.params.id);
   res.send(result);
 };
 
+
 exports.createRecruiter = async (req, res) => {
+  
   try {
     const newUser = {
       username: req.body.username,
@@ -23,6 +26,7 @@ exports.createRecruiter = async (req, res) => {
       roles: req.body.roles,
     };
     const user = await new recruiterModel(newUser).save();
+    
     const confirmToken = confirmEmail(user);
     // console.log(confirmToken);
     return res.send({ confirmationToken: confirmToken });
@@ -30,6 +34,7 @@ exports.createRecruiter = async (req, res) => {
     return res.status(400).json(error);
   }
 };
+
 
 exports.rVerifyCompleted = async (req, res) => {
   const confirmToken = req.params.id;
@@ -58,6 +63,7 @@ exports.rVerifyCompleted = async (req, res) => {
     res.send(err);
   }
 };
+
 
 exports.deleteAllRecruiter = async (req, res) => {
   res.send(await recruiterModel.deleteMany());

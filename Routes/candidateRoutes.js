@@ -26,7 +26,7 @@ const router = express.Router();
 
 router
   .get("/candidates", roleMiddleware(401), getCandidates)
-  .get("/candidate", roleMiddleware(401), getCandidate)
+  .get("/candidate", getCandidate)
   .post("/signup/candidate", signUpCheckCandidate, createCandidate)
   .post("/login/fb/candidate", facebookLoginCheck, loginWithFacebook)
   .post("/login/google/candidate", googleLoginCheck, loginWithGoogle)

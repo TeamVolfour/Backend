@@ -1,7 +1,7 @@
 const { redirect } = require("react-router-dom");
 const { userModel, candidateModel } = require("../Model/candidateModel");
 const { sendValidation, sendToEmail } = require("../functions/sendEmail");
-const { confirmEmail, oneTimePassword } = require("./tokenGenerator");
+const { confirmEmail, oneTimePassword, userToken } = require("./tokenGenerator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -45,9 +45,17 @@ exports.loginWithFacebook = async (req, res) => {
       };
       console.log(newUser);
       await new candidateModel(newUser).save();
-      return res.send("Fb created and connected successfully");
+      const accessToken = userToken(newUser)
+      return res.send({ accessToken: accessToken });
     } else {
-      return res.send("Fb connected successfully");
+      const user = {
+        username: req.body.username,
+        email: req.body.email,
+        facebookId: req.body.facebookId,
+        photoUrl: req.body.image,
+      };
+      const accessToken = userToken(user)
+      return res.send({ accessToken: accessToken });
     }
   } catch (error) {
     console.log(error);
@@ -68,9 +76,17 @@ exports.loginWithGoogle = async (req, res) => {
         photoUrl: req.body.image,
       };
       await new candidateModel(newUser).save();
-      return res.send("Google created and connected successfully");
+      const accessToken = userToken(newUser)
+      return res.send({ accessToken: accessToken });
     } else {
-      return res.send("Google connected successfully");
+      const user = {
+        username: req.body.username,
+        email: req.body.email,
+        facebookId: req.body.facebookId,
+        photoUrl: req.body.image,
+      };
+      const accessToken = userToken(user)
+      return res.send({ accessToken: accessToken });
     }
   } catch (error) {
     console.log(error);

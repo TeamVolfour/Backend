@@ -17,7 +17,7 @@ const router = express.Router();
 
 router
   .get("/recruiters", roleMiddleware(401), getRecruiters)
-  .get("/recruiter", roleMiddleware(401), getRecruiter)
+  .get("/recruiter/:id", getRecruiter)
   .post("/signup/recruiter", signUpCheckRecruiter, createRecruiter)
   .post("/login/recruiter", loginCheck)
   .get("/recruiter/confirmation/:id", rVerifyCompleted)

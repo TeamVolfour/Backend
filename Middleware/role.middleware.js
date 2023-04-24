@@ -3,10 +3,11 @@ const jwt = require("jsonwebtoken");
 exports.roleMiddleware = (...allowedRoles) => {
   return (req, res, next) => {
     const token = req.headers.authorization ?? null;
+    console.log(token)
     if (!token) return res.send("Authorization token is required");
 
     try {
-      const payload = jwt.verify(token, process.env.JWT_SECRET);
+      const payload = jwt.verify(token, process.env.TOKEN_SECRET);
 
       if (!payload) return res.send("Unauthorized");
 
@@ -15,7 +16,7 @@ exports.roleMiddleware = (...allowedRoles) => {
       const result = req.roles
         .map((role) => rolesArray.includes(role))
         .find((val) => val === true);
-      console.log(rolesArray);
+      console.log(rolesArray)
       if (!result) return res.sendStatus(401);
       next();
     } catch (error) {
