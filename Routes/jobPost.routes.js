@@ -6,6 +6,7 @@ const {
   deleteJobPost,
   deleteAllJobPosts,
   addToPendingApplies,
+  getUserJobs,
 } = require("../Controller/jobsController");
 const { jobMiddleware } = require("../Middleware/job.middleware");
 const { roleMiddleware } = require("../Middleware/role.middleware");
@@ -17,8 +18,9 @@ router
   .get("/jobs", getAllJobs)
   .get("/job/:id", getSingleJob)
   .post("/jobs", jobMiddleware, postJobs)
-  .post('/job-apply-doc', createApplyDoc)
-  .put('/job-apply', addToPendingApplies)
+  .post("/job-apply-doc", createApplyDoc)
+  .post("/user-jobs", getUserJobs)
+  .put("/job-apply", addToPendingApplies)
   .delete("/job/:id", deleteJobPost)
   .delete("/jobs", deleteAllJobPosts);
 
