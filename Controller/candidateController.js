@@ -40,6 +40,7 @@ exports.loginWithFacebook = async (req, res) => {
       const newUser = {
         username: req.body.username,
         email: req.body.email,
+        roles: req.body.role,
         facebookId: req.body.facebookId,
         photoUrl: req.body.image,
       };
@@ -51,6 +52,7 @@ exports.loginWithFacebook = async (req, res) => {
       const user = {
         username: req.body.username,
         email: req.body.email,
+        roles: req.body.role,
         facebookId: req.body.facebookId,
         photoUrl: req.body.image,
       };
@@ -76,16 +78,13 @@ exports.loginWithGoogle = async (req, res) => {
         photoUrl: req.body.image,
       };
       await new candidateModel(newUser).save();
-      const accessToken = userToken(newUser)
+      const userDetail = await candidateModel.findOne({ email: req.body.email })
+      const accessToken = userToken(userDetail)
       return res.send({ accessToken: accessToken });
     } else {
-      const user = {
-        username: req.body.username,
-        email: req.body.email,
-        facebookId: req.body.facebookId,
-        photoUrl: req.body.image,
-      };
-      const accessToken = userToken(user)
+      const userDetail = await candidateModel.findOne({ email: req.body.email })
+
+      const accessToken = userToken(userDetail)
       return res.send({ accessToken: accessToken });
     }
   } catch (error) {

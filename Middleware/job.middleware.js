@@ -4,6 +4,8 @@ exports.jobMiddleware = (req, res, next) => {
       return res.status(404).send("Please enter a job title");
     } else if (!req.body.content) {
       return res.status(404).send("Please enter a information about the job");
+    } else if (!req.body.employerEmail) {
+      return res.status(404).send("Please enter emplyer email");
     } else if (!req.body.deadline) {
       return res.status(404).send("Please enter a deadline");
     } else if (!req.body.category) {
