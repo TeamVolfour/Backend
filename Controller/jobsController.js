@@ -1,3 +1,5 @@
+const { ApplyDocModel } = require("../Model/applyDocument.model");
+const { candidateModel } = require("../Model/candidateModel");
 const { jobPostModel } = require("../Model/jobsModel");
 
 exports.getAllJobs = async (req, res) => {
@@ -52,7 +54,7 @@ exports.deleteJobPost = async (req, res) => {
 };
 
 exports.getUserJobs = async (req, res) => {
-  const allJobs = await jobPostModel.find({}).populate("creator");
+  const allJobs = await jobPostModel.find({}).populate("creator").populate("category").populate("pendingCandidates").populate("approvedCandidates")
 
   for (let i = 0; i < allJobs.length; i++) {
     console.log(allJobs[i].creator);
@@ -65,3 +67,20 @@ exports.getUserJobs = async (req, res) => {
 exports.deleteAllJobPosts = async (req, res) => {
   res.send(await jobPostModel.deleteMany());
 };
+exports.approvePendingCandidates = async (req, res) => {
+  const job = await jobPostModel.findOne({ _id: req.body.jobId })
+  console.log(job)
+  job.approvedCandidates.push(req.body.appId)
+  for (let i = 0; i < job.pendingCandidates.length; i++) {
+    if (job.pendingCandidates[0]._id == req.body.appId) {
+      const index = job.pendingCandidates.indexOf();
+      job.pendingCandidates.splice(index, 1)
+      console.log('removed')
+    }
+  }
+
+  const result = await jobPostModel.findByIdAndUpdate(req.body.jobId, job)
+  res.send(result)
+
+
+}

@@ -7,6 +7,7 @@ const {
   deleteAllJobPosts,
   addToPendingApplies,
   getUserJobs,
+  approvePendingCandidates,
 } = require("../Controller/jobsController");
 const { jobMiddleware } = require("../Middleware/job.middleware");
 const { roleMiddleware } = require("../Middleware/role.middleware");
@@ -20,6 +21,7 @@ router
   .post("/jobs", jobMiddleware, postJobs)
   .post("/job-apply-doc", createApplyDoc)
   .post("/user-jobs", getUserJobs)
+  .put('/approve', approvePendingCandidates)
   .put("/job-apply", addToPendingApplies)
   .delete("/job/:id", deleteJobPost)
   .delete("/jobs", deleteAllJobPosts);
