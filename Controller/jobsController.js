@@ -84,7 +84,7 @@ exports.approvePendingCandidates = async (req, res) => {
     }
   }
   const id = req.body.appId;
-  job.approvedCandidates.push({ id });
+  job.approvedCandidates.push(id);
   console.log(job);
   const result = await jobPostModel.findByIdAndUpdate(req.body.jobId, job);
 
