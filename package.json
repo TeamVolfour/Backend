@@ -31,5 +31,8 @@
   "bugs": {
     "url": "https://github.com/DemoDay2023/Backend/issues"
   },
-  "homepage": "https://github.com/DemoDay2023/Backend#readme"
+  "homepage": "https://github.com/DemoDay2023/Backend#readme",
+  "engines": {
+    "node": ">=14 <17"
+  }
 }
