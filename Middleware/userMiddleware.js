@@ -15,9 +15,11 @@ const handleErrors = (err) => {
 };
 
 exports.signUpCheckCandidate = async (req, res, next) => {
-  const isAlready = await candidateModel.findOne({ email: req.body.email });
   const alreadyUsername = await candidateModel.findOne({
     username: req.body.username,
+  });
+  const registeredEmail = await candidateModel.findOne({
+    email: req.body.email,
   });
   const alreadyUsernameRec = await recruiterModel.findOne({
     username: req.body.username,
@@ -28,12 +30,18 @@ exports.signUpCheckCandidate = async (req, res, next) => {
       return res.status(401).json("Email is required");
     } else if (!req.body.username) {
       return res.status(401).json("Username is required");
-    } else if (isAlready) {
-      res.status(409).send("That email is already registered");
-      return;
     } else if (alreadyUsername || alreadyUsernameRec) {
       res.status(409).send("That username is already registered");
       return;
+    } else if (registeredEmail) {
+      if (registeredEmail.emailConfirmed == false) {
+        console.log(registeredEmail);
+        await candidateModel.findOneAndDelete({
+          email: registeredEmail.email,
+        });
+        return next();
+      }
+      return res.status(409).send("That email is already registered");
     }
     next();
   } catch (err) {
@@ -65,8 +73,7 @@ exports.signUpCheckRecruiter = async (req, res, next) => {
     } else if (!req.body.email) {
       return res.status(401).json("Email is required");
     } else if (registeredEmail) {
-      return res.status(409).send("That email is already registered")
-
+      return res.status(409).send("That email is already registered");
     } else if (registeredEmail2) {
       if (registeredEmail2.emailConfirmed == false) {
         console.log(registeredEmail2);
@@ -85,6 +92,7 @@ exports.signUpCheckRecruiter = async (req, res, next) => {
     res.status(401).json({ message: err });
   }
 };
+
 exports.facebookLoginCheck = async (req, res, next) => {
   const registeredEmail = await candidateModel.findOne({
     email: req.body.email,
