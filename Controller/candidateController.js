@@ -1,7 +1,11 @@
 const { redirect } = require("react-router-dom");
 const { userModel, candidateModel } = require("../Model/candidateModel");
 const { sendValidation, sendToEmail } = require("../functions/sendEmail");
-const { confirmEmail, oneTimePassword, userToken } = require("./tokenGenerator");
+const {
+  confirmEmail,
+  oneTimePassword,
+  userToken,
+} = require("./tokenGenerator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -46,17 +50,14 @@ exports.loginWithFacebook = async (req, res) => {
       };
       console.log(newUser);
       await new candidateModel(newUser).save();
-      const accessToken = userToken(newUser)
+      const accessToken = userToken(newUser);
       return res.send({ accessToken: accessToken });
     } else {
-      const user = {
-        username: req.body.username,
+      const userDetail = await candidateModel.findOne({
         email: req.body.email,
-        roles: req.body.role,
-        facebookId: req.body.facebookId,
-        photoUrl: req.body.image,
-      };
-      const accessToken = userToken(user)
+      });
+
+      const accessToken = userToken(userDetail);
       return res.send({ accessToken: accessToken });
     }
   } catch (error) {
@@ -78,13 +79,17 @@ exports.loginWithGoogle = async (req, res) => {
         photoUrl: req.body.image,
       };
       await new candidateModel(newUser).save();
-      const userDetail = await candidateModel.findOne({ email: req.body.email })
-      const accessToken = userToken(userDetail)
+      const userDetail = await candidateModel.findOne({
+        email: req.body.email,
+      });
+      const accessToken = userToken(userDetail);
       return res.send({ accessToken: accessToken });
     } else {
-      const userDetail = await candidateModel.findOne({ email: req.body.email })
+      const userDetail = await candidateModel.findOne({
+        email: req.body.email,
+      });
 
-      const accessToken = userToken(userDetail)
+      const accessToken = userToken(userDetail);
       return res.send({ accessToken: accessToken });
     }
   } catch (error) {

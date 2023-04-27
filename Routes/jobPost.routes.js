@@ -11,7 +11,10 @@ const {
 } = require("../Controller/jobsController");
 const { jobMiddleware } = require("../Middleware/job.middleware");
 const { roleMiddleware } = require("../Middleware/role.middleware");
-const { createApplyDoc } = require("../Controller/applyDoc.controller");
+const {
+  createApplyDoc,
+  deleteApplyDoc,
+} = require("../Controller/applyDoc.controller");
 
 const router = express.Router();
 
@@ -20,8 +23,9 @@ router
   .get("/job/:id", getSingleJob)
   .post("/jobs", jobMiddleware, postJobs)
   .post("/job-apply-doc", createApplyDoc)
+  .delete("/apply-doc", deleteApplyDoc)
   .post("/user-jobs", getUserJobs)
-  .put('/approve', approvePendingCandidates)
+  .put("/approve", approvePendingCandidates)
   .put("/job-apply", addToPendingApplies)
   .delete("/job/:id", deleteJobPost)
   .delete("/jobs", deleteAllJobPosts);

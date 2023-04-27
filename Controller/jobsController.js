@@ -54,7 +54,12 @@ exports.deleteJobPost = async (req, res) => {
 };
 
 exports.getUserJobs = async (req, res) => {
-  const allJobs = await jobPostModel.find({}).populate("creator").populate("category").populate("pendingCandidates").populate("approvedCandidates")
+  const allJobs = await jobPostModel
+    .find({})
+    .populate("creator")
+    .populate("category")
+    .populate("pendingCandidates")
+    .populate("approvedCandidates");
 
   for (let i = 0; i < allJobs.length; i++) {
     console.log(allJobs[i].creator);
@@ -68,19 +73,20 @@ exports.deleteAllJobPosts = async (req, res) => {
   res.send(await jobPostModel.deleteMany());
 };
 exports.approvePendingCandidates = async (req, res) => {
-  const job = await jobPostModel.findOne({ _id: req.body.jobId })
-  console.log(job)
-  job.approvedCandidates.push(req.body.appId)
+  const job = await jobPostModel.findOne({ _id: req.body.jobId });
+  console.log(job);
+
   for (let i = 0; i < job.pendingCandidates.length; i++) {
     if (job.pendingCandidates[0]._id == req.body.appId) {
       const index = job.pendingCandidates.indexOf();
-      job.pendingCandidates.splice(index, 1)
-      console.log('removed')
+      job.pendingCandidates.splice(index, 1);
+      console.log("removed");
     }
   }
+  const id = req.body.appId;
+  job.approvedCandidates.push({ id });
+  console.log(job);
+  const result = await jobPostModel.findByIdAndUpdate(req.body.jobId, job);
 
-  const result = await jobPostModel.findByIdAndUpdate(req.body.jobId, job)
-  res.send(result)
-
-
-}
+  res.send(result);
+};

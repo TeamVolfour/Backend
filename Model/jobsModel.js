@@ -14,7 +14,7 @@ const JobPost = new Schema({
   tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
   creator: { type: Schema.Types.ObjectId, ref: "Recruiter" },
   pendingCandidates: [{ type: Schema.Types.ObjectId, ref: "ApplyDoc" }],
-  approvedCandidates: [{ type: Schema.Types.ObjectId, ref: "Candidate" }],
+  approvedCandidates: [{ type: Schema.Types.ObjectId, ref: "ApplyDoc" }],
   createdAt: { type: Date, default: Date.now() },
 });
 
