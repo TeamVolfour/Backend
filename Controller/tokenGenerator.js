@@ -61,9 +61,9 @@ exports.confirmEmail = (props) => {
     }
   );
   if (props.roles.recruiter || props.roles.admin) {
-    url = `https://volfour.onrender.com/recruiter/confirmation/${emailConfirm}`;
+    url = `http://localhost:${port}/confirmation/${emailConfirm}`;
   } else if (props.roles.candidate) {
-    url = `https://volfour.onrender.com/candidate/confirmation/${emailConfirm}`;
+    url = `http://localhost:${port}/confirmation/${emailConfirm}`;
   }
 
   const dispatch = {
