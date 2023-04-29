@@ -148,6 +148,11 @@ exports.loginCheck = async (req, res, next) => {
   const candidate = await candidateModel.findOne({ email: req.body.email });
   const recruiter = await recruiterModel.findOne({ email: req.body.email });
   try {
+    if (!req.body.email) {
+      return res
+        .status(401)
+        .send({ message: "Please enter your email address" });
+    }
     if (
       (candidate && candidate.emailConfirmed) ||
       (recruiter && recruiter.emailConfirmed)
