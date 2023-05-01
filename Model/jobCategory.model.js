@@ -2,7 +2,10 @@ const { Schema, model } = require("mongoose");
 
 const jobCategoryModel = new Schema({
   name: { type: String, required: true },
-  photoUrl: String,
+  photoUrl: {
+    type: Buffer,
+    contentType: String
+  }
 });
 
 const JobCategoryModel = model("JobCategory", jobCategoryModel);

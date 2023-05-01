@@ -60,7 +60,7 @@ exports.confirmEmail = (props) => {
       expiresIn: "8m",
     }
   );
-  if (props.roles.recruiter || props.roles.admin) {
+  if (props.roles.recruiter || props.roles.admin || props.roles.company) {
     url = `http://localhost:${port}/confirmation/${emailConfirm}`;
   } else if (props.roles.candidate) {
     url = `http://localhost:${port}/confirmation/${emailConfirm}`;
@@ -68,8 +68,8 @@ exports.confirmEmail = (props) => {
 
   const dispatch = {
     email: props.email,
-    name: props.username,
-    organization: props.organizationName,
+    name: props.username ? props.username : props.fullname,
+    company: props.companyName,
     id: id,
     url: url,
   };

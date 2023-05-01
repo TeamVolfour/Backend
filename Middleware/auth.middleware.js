@@ -1,6 +1,8 @@
 const { userToken } = require("../Controller/tokenGenerator");
 const { userModel, candidateModel } = require("../Model/candidateModel");
 const { recruiterModel } = require("../Model/recruiterModel");
+const emailValidator = require('deep-email-validator');
+
 
 const handleErrors = (err) => {
   console.log(err.message, err.code);
@@ -57,20 +59,15 @@ exports.signUpCheckRecruiter = async (req, res, next) => {
   const registeredEmail2 = await recruiterModel.findOne({
     email: req.body.email,
   });
-  const registeredOrganization = await recruiterModel.findOne({
-    organizationName: req.body.organization,
-  });
 
   try {
-    if (!req.body.organization && !req.body.username) {
-      if (!req.body.username) {
-        return res.status(401).json("Username is required");
-      } else if (!req.body.organization) {
-        return res
-          .status(401)
-          .json("Please enter username or organziation name");
-      }
-    } else if (!req.body.email) {
+
+    if (!req.body.full.firstname) {
+      return res.status(401).json("Firstname is required");
+    } else if (!req.body.full.lastname) {
+      return res.status(401).json("Lastname is required");
+    }
+    else if (!req.body.email) {
       return res.status(401).json("Email is required");
     } else if (registeredEmail) {
       return res.status(409).send("That email is already registered");
@@ -93,56 +90,41 @@ exports.signUpCheckRecruiter = async (req, res, next) => {
   }
 };
 
-exports.facebookLoginCheck = async (req, res, next) => {
-  const registeredEmail = await candidateModel.findOne({
-    email: req.body.email,
-  });
-  const registeredEmail2 = await recruiterModel.findOne({
-    email: req.body.email,
-  });
-  console.log(registeredEmail, "info");
 
-  if (req.body.facebookId) {
-    if (!registeredEmail && !registeredEmail2) {
-      next();
-    } else {
-      if (registeredEmail.facebookId) {
-        if (registeredEmail.facebookId == req.body.facebookId) {
-          next();
-        }
-      } else {
-        return res.status(409).json("This email is already registered");
-      }
-    }
-  } else {
-    return res.status(401).json("Facebook login failed");
-  }
-};
+exports.signUpCheckCompany = async (req, res, next) => {
+  const registeredBussinesEmail = await recruiterModel.findOne({ email: req.body.email })
 
-exports.googleLoginCheck = async (req, res, next) => {
-  const registeredEmail = await candidateModel.findOne({
-    email: req.body.email,
-  });
-  const registeredEmail2 = await recruiterModel.findOne({
-    email: req.body.email,
-  });
-  console.log(req.body, registeredEmail.googleId);
-  if (req.body.googleId) {
-    if (!registeredEmail && !registeredEmail2) {
-      next();
-    } else {
-      if (registeredEmail.googleId) {
-        if (registeredEmail.googleId == req.body.googleId) {
-          next();
-        }
-      } else {
-        return res.status(409).json("This email is already registered");
+
+  try {
+    if (!req.body.email) {
+      return res.status(401).json("Email is required");
+    } else if (!req.body.fullname.firstname) {
+      return res.status(401).json("Firstname is required");
+    } else if (!req.body.fullname.lastname) {
+      return res.status(401).json("Lastname is required");
+    } else if (!req.body.phoneNumber) {
+      return res.status(401).json("Phone number is required");
+    } else if (!req.body.companyName) {
+      return res.status(401).json("Company name is required");
+    } else if (registeredBussinesEmail) {
+      if (registeredEmail.emailConfirmed == false) {
+        console.log(registeredEmail);
+        await candidateModel.findOneAndDelete({
+          email: registeredEmail.email,
+        });
+        return next();
       }
+      return res.status(409).send("That email is already registered");
+    } else if (req.body.email.includes('gmail') || req.body.email.includes('yahoo') || req.body.email.includes('outlook')) {
+      return res.status(401).json("Please use bussines email");
     }
-  } else {
-    return res.status(401).json("Google login failed");
+
+    next()
+  } catch (err) {
+    res.status(400).json({ message: err });
   }
-};
+}
+
 
 exports.loginCheck = async (req, res, next) => {
   const candidate = await candidateModel.findOne({ email: req.body.email });

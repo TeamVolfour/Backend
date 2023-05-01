@@ -33,6 +33,27 @@ exports.createRecruiter = async (req, res) => {
   }
 };
 
+exports.createCompany = async (req, res) => {
+  try {
+    const newCompany = {
+      fullname: {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname
+      },
+      companyName: req.body.company,
+      phoneNumber: req.body.phoneNumber,
+      email: req.body.email,
+      roles: req.body.roles,
+
+    };
+    const company = await new recruiterModel(newCompany).save();
+
+    const confirmToken = confirmEmail(company)
+    return res.send({ confirmationToken: confirmToken });
+  } catch (err) {
+    return res.status(400).json(err);
+  }
+}
 exports.rVerifyCompleted = async (req, res) => {
   const confirmToken = req.params.id;
   console.log(confirmToken);
@@ -61,6 +82,85 @@ exports.rVerifyCompleted = async (req, res) => {
     res.send(err);
   }
 };
+
+exports.loginWithGoogle = async (req, res) => {
+  const googleId = await recruiterModel.findOne({
+    googleId: req.body.googleId,
+  });
+  try {
+    console.log(req.body);
+    if (!googleId) {
+      const newUser = {
+        fullname: {
+          firstname: req.body.fullname.firstname,
+          lastname: req.body.fullname.lastname
+
+        },
+        email: req.body.email,
+        googleId: req.body.googleId,
+        photoUrl: req.body.image,
+      };
+      await new recruiterModel(newUser).save();
+      const userDetail = await recruiterModel.findOne({
+        email: req.body.email,
+      });
+      const accessToken = userToken(userDetail);
+      return res.send({ accessToken: accessToken });
+    } else {
+      const userDetail = await recruiterModel.findOne({
+        email: req.body.email,
+      });
+
+      const accessToken = userToken(userDetail);
+      return res.send({ accessToken: accessToken });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.loginWithFacebook = async (req, res) => {
+  const fbId = await recruiterModel.findOne({
+    facebookId: req.body.facebookId,
+  });
+  try {
+    console.log(req.body);
+    if (!fbId) {
+      const newUser = {
+        fullname: {
+          firstname: req.body.fullname.firstname,
+          lastname: req.body.fullname.lastname
+
+        },
+        email: req.body.email,
+        facebookId: req.body.facebookId,
+        photoUrl: req.body.image,
+      };
+      await new recruiterModel(newUser).save();
+      const userDetail = await recruiterModel.findOne({
+        email: req.body.email,
+      });
+      const accessToken = userToken(userDetail);
+      return res.send({ accessToken: accessToken });
+    } else {
+      const userDetail = await recruiterModel.findOne({
+        email: req.body.email,
+      });
+
+      const accessToken = userToken(userDetail);
+      return res.send({ accessToken: accessToken });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
+
+
+
+
 
 exports.deleteAllRecruiter = async (req, res) => {
   res.send(await recruiterModel.deleteMany());

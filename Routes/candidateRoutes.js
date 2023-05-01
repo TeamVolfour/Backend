@@ -17,10 +17,9 @@ const {
   signUpCheck,
   loginCheck,
   signUpCheckCandidate,
-  facebookLoginCheck,
-  googleLoginCheck,
-} = require("../Middleware/userMiddleware");
+} = require("../Middleware/auth.middleware");
 const { roleMiddleware } = require("../Middleware/role.middleware");
+const { facebookLoginCheck, googleLoginCheck } = require("../Middleware/socialAuth.middleware");
 
 const router = express.Router();
 
