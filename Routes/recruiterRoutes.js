@@ -17,7 +17,10 @@ const {
   signUpCheckCompany,
 } = require("../Middleware/auth.middleware");
 const { roleMiddleware } = require("../Middleware/role.middleware");
-const { googleLoginCheck2, facebookLoginCheck2 } = require("../Middleware/socialAuth.middleware");
+const {
+  googleLoginCheck2,
+  facebookLoginCheck2,
+} = require("../Middleware/socialAuth.middleware");
 const router = express.Router();
 
 router
@@ -27,7 +30,6 @@ router
   .post("/signup/recruiter-company", signUpCheckCompany, createCompany)
   .post("/login/google/recruiter", googleLoginCheck2, loginWithGoogle)
   .post("/login/fb/recruiter", facebookLoginCheck2, loginWithFacebook)
-
   .post("/login/recruiter", loginCheck)
   .get("/recruiter/confirmation/:id", rVerifyCompleted)
   .delete("/recruiters", deleteAllRecruiter);

@@ -34,26 +34,21 @@ exports.createRecruiter = async (req, res) => {
 };
 
 exports.createCompany = async (req, res) => {
-  try {
-    const newCompany = {
-      fullname: {
-        firstname: req.body.firstname,
-        lastname: req.body.lastname
-      },
-      companyName: req.body.company,
-      phoneNumber: req.body.phoneNumber,
-      email: req.body.email,
-      roles: req.body.roles,
+  const newCompany = {
+    fullname: {
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+    },
+    companyName: req.body.company,
+    phoneNumber: req.body.phoneNumber,
+    email: req.body.email,
+    roles: req.body.roles,
+  };
+  const company = await new recruiterModel(newCompany).save();
 
-    };
-    const company = await new recruiterModel(newCompany).save();
-
-    const confirmToken = confirmEmail(company)
-    return res.send({ confirmationToken: confirmToken });
-  } catch (err) {
-    return res.status(400).json(err);
-  }
-}
+  const confirmToken = confirmEmail(company);
+  return res.send({ confirmationToken: confirmToken });
+};
 exports.rVerifyCompleted = async (req, res) => {
   const confirmToken = req.params.id;
   console.log(confirmToken);
@@ -93,8 +88,7 @@ exports.loginWithGoogle = async (req, res) => {
       const newUser = {
         fullname: {
           firstname: req.body.fullname.firstname,
-          lastname: req.body.fullname.lastname
-
+          lastname: req.body.fullname.lastname,
         },
         email: req.body.email,
         googleId: req.body.googleId,
@@ -129,8 +123,7 @@ exports.loginWithFacebook = async (req, res) => {
       const newUser = {
         fullname: {
           firstname: req.body.fullname.firstname,
-          lastname: req.body.fullname.lastname
-
+          lastname: req.body.fullname.lastname,
         },
         email: req.body.email,
         facebookId: req.body.facebookId,
@@ -154,13 +147,6 @@ exports.loginWithFacebook = async (req, res) => {
     console.log(error);
   }
 };
-
-
-
-
-
-
-
 
 exports.deleteAllRecruiter = async (req, res) => {
   res.send(await recruiterModel.deleteMany());

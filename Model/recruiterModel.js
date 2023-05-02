@@ -2,10 +2,9 @@ const { Schema, model, Types } = require("mongoose");
 const { isEmail } = require("validator");
 
 const Recruiter = new Schema({
-
   fullname: {
     firstname: String,
-    lastname: String
+    lastname: String,
   },
   companyName: {
     type: String,
@@ -18,10 +17,13 @@ const Recruiter = new Schema({
     validate: [isEmail, "Please enter a valid email"],
   },
   bannerImg: String,
-  phoneNumber: { type: Number, minlength: [8, "Minimum phonenumber length is 8"] },
+  phoneNumber: {
+    type: Number,
+    minlength: [8, "Minimum phonenumber length is 8"],
+  },
   photoUrl: {
     type: String,
-    default: 
+    default:
       "https://i.pinimg.com/736x/8b/16/7a/8b167af653c2399dd93b952a48740620.jpg",
   },
   emailConfirmed: { type: Boolean, default: false },

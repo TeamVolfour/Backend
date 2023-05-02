@@ -1,11 +1,16 @@
 const nodemailer = require("nodemailer");
 const path = require("path");
 const hbs = require("nodemailer-express-handlebars");
+const fs = require("fs");
+const { promisify } = require("util");
 
+const readFile = promisify(fs.readFile);
 const sendToMailConfiramtion = async (props) => {
   try {
     var transporter = nodemailer.createTransport({
-      service: "gmail",
+      port: 587,
+      host: "smtp.gmail.com",
+
       auth: {
         user: process.env.GMAIL,
         pass: process.env.GMAIL_PASSWORD,
@@ -23,13 +28,14 @@ const sendToMailConfiramtion = async (props) => {
     };
 
     transporter.use("compile", hbs(handlebarOptions));
-
+    console.log(__dirname);
     var mailOptions = {
       from: process.env.GMAIL,
       to: props.email,
       subject: "Volfour email confirmation",
       preheader: `Hi ${props.name}! Your email confirmation has been sent to you.`,
-      template: "index",
+      // template: "index",
+      html: await readFile(__dirname + "/html.html", "utf8"),
       context: {
         url: props.url,
       },

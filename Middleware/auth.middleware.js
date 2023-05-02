@@ -1,8 +1,6 @@
 const { userToken } = require("../Controller/tokenGenerator");
 const { userModel, candidateModel } = require("../Model/candidateModel");
 const { recruiterModel } = require("../Model/recruiterModel");
-const emailValidator = require('deep-email-validator');
-
 
 const handleErrors = (err) => {
   console.log(err.message, err.code);
@@ -61,13 +59,11 @@ exports.signUpCheckRecruiter = async (req, res, next) => {
   });
 
   try {
-
     if (!req.body.full.firstname) {
       return res.status(401).json("Firstname is required");
     } else if (!req.body.full.lastname) {
       return res.status(401).json("Lastname is required");
-    }
-    else if (!req.body.email) {
+    } else if (!req.body.email) {
       return res.status(401).json("Email is required");
     } else if (registeredEmail) {
       return res.status(409).send("That email is already registered");
@@ -90,10 +86,10 @@ exports.signUpCheckRecruiter = async (req, res, next) => {
   }
 };
 
-
 exports.signUpCheckCompany = async (req, res, next) => {
-  const registeredBussinesEmail = await recruiterModel.findOne({ email: req.body.email })
-
+  const registeredBussinesEmail = await recruiterModel.findOne({
+    email: req.body.email,
+  });
 
   try {
     if (!req.body.email) {
@@ -115,16 +111,19 @@ exports.signUpCheckCompany = async (req, res, next) => {
         return next();
       }
       return res.status(409).send("That email is already registered");
-    } else if (req.body.email.includes('gmail') || req.body.email.includes('yahoo') || req.body.email.includes('outlook')) {
+    } else if (
+      req.body.email.includes("gmail") ||
+      req.body.email.includes("yahoo") ||
+      req.body.email.includes("outlook")
+    ) {
       return res.status(401).json("Please use bussines email");
     }
 
-    next()
+    next();
   } catch (err) {
     res.status(400).json({ message: err });
   }
-}
-
+};
 
 exports.loginCheck = async (req, res, next) => {
   const candidate = await candidateModel.findOne({ email: req.body.email });
