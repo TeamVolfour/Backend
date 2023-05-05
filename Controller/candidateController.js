@@ -34,7 +34,7 @@ exports.createCandidate = async (req, res) => {
   }
 };
 
-exports.loginWithFacebook = async (req, res) => {
+exports.signupWithFacebook = async (req, res) => {
   const fbId = await candidateModel.findOne({
     facebookId: req.body.facebookId,
   });
@@ -65,7 +65,7 @@ exports.loginWithFacebook = async (req, res) => {
   }
 };
 
-exports.loginWithGoogle = async (req, res) => {
+exports.signupWithGoogle = async (req, res) => {
   const googleId = await candidateModel.findOne({
     googleId: req.body.googleId,
   });

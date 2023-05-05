@@ -8,8 +8,8 @@ const {
   rVerifyCompleted,
   tokenResponse,
   createCompany,
-  loginWithGoogle,
-  loginWithFacebook,
+  signupWithGoogle,
+  signupWithFacebook,
 } = require("../Controller/recruiterController");
 const {
   signUpCheckRecruiter,
@@ -18,8 +18,8 @@ const {
 } = require("../Middleware/auth.middleware");
 const { roleMiddleware } = require("../Middleware/role.middleware");
 const {
-  googleLoginCheck2,
-  facebookLoginCheck2,
+  googleSignupCheck2,
+  facebookSignupCheck2,
 } = require("../Middleware/socialAuth.middleware");
 const router = express.Router();
 
@@ -28,8 +28,8 @@ router
   .get("/recruiter/:id", getRecruiter)
   .post("/signup/recruiter-person", signUpCheckRecruiter, createRecruiter)
   .post("/signup/recruiter-company", signUpCheckCompany, createCompany)
-  .post("/login/google/recruiter", googleLoginCheck2, loginWithGoogle)
-  .post("/login/fb/recruiter", facebookLoginCheck2, loginWithFacebook)
+  .post("/login/google/recruiter", googleSignupCheck2, signupWithGoogle)
+  .post("/login/fb/recruiter", facebookSignupCheck2, signupWithFacebook)
   .post("/login/recruiter", loginCheck)
   .get("/recruiter/confirmation/:id", rVerifyCompleted)
   .delete("/recruiters", deleteAllRecruiter);

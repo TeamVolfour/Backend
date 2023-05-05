@@ -28,6 +28,9 @@ exports.login = async (req, res) => {
   }
 };
 
+
+
+
 exports.otpCheck = async (req, res) => {
   const accessToken = req.headers.otptoken;
   console.log(req.headers.otptoken, "headers");
@@ -71,6 +74,78 @@ exports.otpCheck = async (req, res) => {
     res.send(err);
   }
 };
+
+exports.loginWithGoogle = async (req, res) => {
+  const googleId = await candidateModel.findOne({
+    googleId: req.body.googleId,
+  });
+
+  const candidate = await candidateModel.findOne({
+    email: req.body.email,
+  });
+
+
+  const googleId2 = await recruiterModel.findOne({
+    googleId: req.body.googleId,
+  });
+
+  try {
+    console.log(req.body);
+    if (candidate) {
+      if (!googleId) {
+        const newUser = {
+          username: req.body.username,
+          email: req.body.email,
+          googleId: req.body.googleId,
+          photoUrl: req.body.image,
+        };
+        await new candidateModel(newUser).save();
+        const userDetail = await candidateModel.findOne({
+          email: req.body.email,
+        });
+        const accessToken = userToken(userDetail);
+        return res.send({ accessToken: accessToken });
+      } else {
+        const userDetail = await candidateModel.findOne({
+          email: req.body.email,
+        });
+
+        const accessToken = userToken(userDetail);
+        return res.send({ accessToken: accessToken });
+      }
+    } else {
+      if (!googleId2) {
+        const newUser = {
+          fullname: {
+            firstname: req.body.username,
+            lastname: req.body.username
+
+          },
+          email: req.body.email,
+          googleId: req.body.googleId,
+          photoUrl: req.body.image,
+        };
+        await new recruiterModel(newUser).save();
+        const userDetail = await recruiterModel.findOne({
+          email: req.body.email,
+        });
+        const accessToken = userToken(userDetail);
+        return res.send({ accessToken: accessToken });
+      } else {
+        const userDetail = await recruiterModel.findOne({
+          email: req.body.email,
+        });
+
+        const accessToken = userToken(userDetail);
+        return res.send({ accessToken: accessToken });
+      }
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 
 exports.tokenResponse = async (req, res) => {
   console.log(req.body.id);

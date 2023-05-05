@@ -78,7 +78,7 @@ exports.rVerifyCompleted = async (req, res) => {
   }
 };
 
-exports.loginWithGoogle = async (req, res) => {
+exports.signupWithGoogle = async (req, res) => {
   const googleId = await recruiterModel.findOne({
     googleId: req.body.googleId,
   });
@@ -113,7 +113,7 @@ exports.loginWithGoogle = async (req, res) => {
   }
 };
 
-exports.loginWithFacebook = async (req, res) => {
+exports.signupWithFacebook = async (req, res) => {
   const fbId = await recruiterModel.findOne({
     facebookId: req.body.facebookId,
   });
