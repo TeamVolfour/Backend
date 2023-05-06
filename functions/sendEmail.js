@@ -34,8 +34,8 @@ const sendToMailConfiramtion = async (props) => {
       to: props.email,
       subject: "Volfour email confirmation",
       preheader: `Hi ${props.name}! Your email confirmation has been sent to you.`,
-      // template: "index",
-      html: await readFile(__dirname + "/html.html", "utf8"),
+      template: "index",
+      // html: await readFile(__dirname + "/html.html", "utf8"),
       context: {
         url: props.url,
       },
