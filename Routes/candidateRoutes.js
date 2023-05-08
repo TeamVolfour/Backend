@@ -13,7 +13,8 @@ const {
   login,
   otpCheck,
   tokenResponse,
-  loginWithGoogle
+  loginWithGoogle,
+  loginWithFacebook
 } = require("../Controller/commonController");
 const {
   signUpCheck,
@@ -32,7 +33,7 @@ router
   .post("/signup/candidate", signUpCheckCandidate, createCandidate)
   .post("/signup/fb/candidate", facebookSignupCheck, signupWithFacebook)
   .post("/signup/google/candidate", googleSignupCheck, signupWithGoogle)
-  // .post("/login/fb", facebookLoginCheck, loginWithFacebook)
+  .post("/login/fb", facebookLoginCheck, loginWithFacebook)
   .post("/login/google", googleLoginCheck, loginWithGoogle)
   .post("/login", loginCheck, login)
   .post("/otpCheck", otpCheck)

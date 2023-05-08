@@ -26,7 +26,7 @@ exports.createRecruiter = async (req, res) => {
     const user = await new recruiterModel(newUser).save();
 
     const confirmToken = confirmEmail(user);
-    // console.log(confirmToken);
+
     return res.send({ confirmationToken: confirmToken });
   } catch (error) {
     return res.status(400).json(error);
@@ -51,7 +51,7 @@ exports.createCompany = async (req, res) => {
 };
 exports.rVerifyCompleted = async (req, res) => {
   const confirmToken = req.params.id;
-  console.log(confirmToken);
+
   try {
     if (confirmToken) {
       jwt.verify(
@@ -59,9 +59,9 @@ exports.rVerifyCompleted = async (req, res) => {
         process.env.TOKEN_SECRET || "emailSecret123",
         async function (err, response) {
           if (err) return res.send(err);
-          console.log(response, "resposne");
+
           let user = await recruiterModel.findById(response.id);
-          console.log(user);
+
           user.emailConfirmed = true;
           await recruiterModel.findByIdAndUpdate(response.id, user);
           return res.redirect(
@@ -83,7 +83,7 @@ exports.signupWithGoogle = async (req, res) => {
     googleId: req.body.googleId,
   });
   try {
-    console.log(req.body);
+
     if (!googleId) {
       const newUser = {
         fullname: {
@@ -118,7 +118,7 @@ exports.signupWithFacebook = async (req, res) => {
     facebookId: req.body.facebookId,
   });
   try {
-    console.log(req.body);
+
     if (!fbId) {
       const newUser = {
         fullname: {

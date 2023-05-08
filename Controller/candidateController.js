@@ -27,7 +27,7 @@ exports.createCandidate = async (req, res) => {
     };
     const user = await new candidateModel(newUser).save();
     const confirmToken = confirmEmail(user);
-    console.log(confirmToken);
+
     return res.send({ confirmationToken: confirmToken });
   } catch (error) {
     return res.status(400).json(error);
@@ -39,7 +39,7 @@ exports.signupWithFacebook = async (req, res) => {
     facebookId: req.body.facebookId,
   });
   try {
-    console.log(req.body);
+
     if (!fbId) {
       const newUser = {
         username: req.body.username,
@@ -48,7 +48,7 @@ exports.signupWithFacebook = async (req, res) => {
         facebookId: req.body.facebookId,
         photoUrl: req.body.image,
       };
-      console.log(newUser);
+
       await new candidateModel(newUser).save();
       const accessToken = userToken(newUser);
       return res.send({ accessToken: accessToken });
@@ -70,7 +70,7 @@ exports.signupWithGoogle = async (req, res) => {
     googleId: req.body.googleId,
   });
   try {
-    console.log(req.body);
+
     if (!googleId) {
       const newUser = {
         username: req.body.username,
@@ -100,7 +100,6 @@ exports.signupWithGoogle = async (req, res) => {
 exports.cVerifyCompleted = async (req, res) => {
   const confirmToken = req.params.id;
 
-  console.log(req.headers, "headers");
   try {
     if (confirmToken) {
       jwt.verify(
@@ -110,11 +109,11 @@ exports.cVerifyCompleted = async (req, res) => {
           if (err) return res.send(err);
 
           let user = await candidateModel.findById(response.id);
-          console.log(user);
+
           user.emailConfirmed = true;
           await candidateModel.findByIdAndUpdate(response.id, user);
           return res.redirect(
-            "https://volfour-rayethedev-volfour-fe.vercel.app/confirmation/" +
+            "https://localhost:3000/confirmation/" +
               confirmToken
           );
         }

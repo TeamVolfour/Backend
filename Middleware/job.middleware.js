@@ -1,5 +1,9 @@
 exports.jobMiddleware = (req, res, next) => {
+
+
   try {
+    console.log(req.body, 'job post')
+
     if (!req.body.title) {
       return res.status(404).send("Please enter a job title");
     } else if (!req.body.content) {

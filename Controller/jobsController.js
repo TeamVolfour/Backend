@@ -1,3 +1,4 @@
+const multer = require("multer");
 const { ApplyDocModel } = require("../Model/applyDocument.model");
 const { candidateModel } = require("../Model/candidateModel");
 const { jobPostModel } = require("../Model/jobsModel");
@@ -29,16 +30,64 @@ exports.getSingleJob = async (req, res) => {
     res.send(error);
   }
 };
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "Images");
+  },
+  filename: (req, file, cb) => {
+    console.log(file);
+    var tempFileArr = file.originalname.split(".");
+    var tempFileName = tempFileArr[0];
+    var tempFileExtension = tempFileArr[1];
+
+    cb(null, tempFileName + "-" + Date.now() + "." + tempFileExtension);
+  },
+});
+
+const upload = multer({
+  storage: storage, fileFilter: (req, file, callback) => {
+    const acceptableExtensions = ['png', 'jpg', 'jpeg', 'jpg']
+    if (!(acceptableExtensions.some(extension =>
+      path.extname(file.originalname).toLowerCase() === `.${extension}`)
+    )) {
+      return callback(new Error(`Extension not allowed, accepted extensions are ${acceptableExtensions.join(',')}`))
+    }
+    callback(null, true)
+  }
+}).single("image");
+
 
 exports.postJobs = async (req, res) => {
-  try {
-    const body = req.body;
-    const result = await new jobPostModel(body).save();
 
-    return res.send(result);
-  } catch (error) {
-    res.status(400).send(error.message);
-  }
+
+  upload(req, res, (err) => {
+    if (err) return console.log(err);
+    const jobDoc = new jobPostModel({
+      title: req.body.title,
+      content: req.body.content,
+      emplyerEmail: req.body.emplyerEmail,
+      category: req.body.category,
+      deadline: req.body.deadline,
+      experience: req.body.experience,
+      location: req.body.location,
+      tags: req.body.tags,
+      creator: req.body.creator,
+      pendingCandidates: req.body.pendingCandidates,
+      approvedCandidates: req.body.approvedCandidates,
+      bannerImg: fs.readFileSync(
+        path.join(
+          __dirname.substring(0, __dirname.lastIndexOf("/")) +
+          "/Images/" +
+          req.file.filename
+        )
+      ),
+    });
+
+    jobDoc
+      .save()
+      .then(() => res.send(jobDoc))
+      .catch((err) => console.log(err));
+  });
 };
 exports.addToPendingApplies = async (req, res) => {
   const jobId = req.body.jobId;
@@ -74,7 +123,7 @@ exports.deleteAllJobPosts = async (req, res) => {
 };
 exports.approvePendingCandidates = async (req, res) => {
   const job = await jobPostModel.findOne({ _id: req.body.jobId });
-  console.log(job);
+
 
   for (let i = 0; i < job.pendingCandidates.length; i++) {
     if (job.pendingCandidates[0]._id == req.body.appId) {
@@ -85,7 +134,7 @@ exports.approvePendingCandidates = async (req, res) => {
   }
   const id = req.body.appId;
   job.approvedCandidates.push(id);
-  console.log(job);
+
   const result = await jobPostModel.findByIdAndUpdate(req.body.jobId, job);
 
   res.send(result);

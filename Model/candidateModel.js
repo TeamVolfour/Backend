@@ -20,6 +20,7 @@ const Candidate = new Schema({
   roles: { type: Object, default: { candidate: 200 } },
   badges: Object,
   bannerImg: String,
+  phoneNumber: Number,
   photoUrl: {
     type: String,
     default:

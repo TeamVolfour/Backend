@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
     cb(null, tempFileName + "-" + Date.now() + "." + tempFileExtension);
   },
 });
-1;
+
 const upload = multer({ storage: storage }).single("image");
 
 exports.getCategories = async (req, res) => {

@@ -11,7 +11,7 @@ exports.facebookLoginCheck = async (req, res, next) => {
     const registeredEmail2 = await recruiterModel.findOne({
         email: req.body.email,
     });
-    console.log(registeredEmail, "info");
+
 
     if (req.body.facebookId) {
         if (!registeredEmail && !registeredEmail2) {
@@ -79,7 +79,7 @@ exports.facebookSignupCheck = async (req, res, next) => {
     const registeredEmail2 = await recruiterModel.findOne({
         email: req.body.email,
     });
-    console.log(registeredEmail, "info");
+
 
     if (req.body.facebookId) {
         if (!registeredEmail && !registeredEmail2) {
@@ -136,7 +136,7 @@ exports.facebookSignupCheck2 = async (req, res, next) => {
     const registeredEmail2 = await recruiterModel.findOne({
         email: req.body.email,
     });
-    console.log(registeredEmail2, "info");
+
 
     if (req.body.facebookId) {
         if (!registeredEmail && !registeredEmail2) {

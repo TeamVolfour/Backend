@@ -33,7 +33,7 @@ exports.login = async (req, res) => {
 
 exports.otpCheck = async (req, res) => {
   const accessToken = req.headers.otptoken;
-  console.log(req.headers.otptoken, "headers");
+
 
   try {
     if (accessToken) {
@@ -42,11 +42,11 @@ exports.otpCheck = async (req, res) => {
         process.env.TOKEN_SECRET || "emailSecret123",
         async function (err, response) {
           if (err) return res.send(err);
-          console.log(response.token);
+
 
           if (req.body.otp == response.token) {
             console.log("matched");
-            console.log(response._id);
+
             const candidate = await candidateModel.findById({
               _id: response._id,
             });
@@ -90,7 +90,7 @@ exports.loginWithGoogle = async (req, res) => {
   });
 
   try {
-    console.log(req.body);
+
     if (candidate) {
       if (!googleId) {
         const newUser = {
@@ -146,9 +146,79 @@ exports.loginWithGoogle = async (req, res) => {
   }
 };
 
+exports.loginWithFacebook = async (req, res) => {
+  const facebookId = await candidateModel.findOne({
+    googleId: req.body.googleId,
+  });
+
+  const candidate = await candidateModel.findOne({
+    email: req.body.email,
+  });
+
+
+  const facebookId2 = await recruiterModel.findOne({
+    facebookId: req.body.facebookId,
+  });
+
+  try {
+
+    if (candidate) {
+      if (!facebookId) {
+        const newUser = {
+          username: req.body.username,
+          email: req.body.email,
+          facebookId: req.body.facebookId,
+          photoUrl: req.body.image,
+        };
+        await new candidateModel(newUser).save();
+        const userDetail = await candidateModel.findOne({
+          email: req.body.email,
+        });
+        const accessToken = userToken(userDetail);
+        return res.send({ accessToken: accessToken });
+      } else {
+        const userDetail = await candidateModel.findOne({
+          email: req.body.email,
+        });
+
+        const accessToken = userToken(userDetail);
+        return res.send({ accessToken: accessToken });
+      }
+    } else {
+      if (!facebookId2) {
+        const newUser = {
+          fullname: {
+            firstname: req.body.username,
+            lastname: req.body.username
+
+          },
+          email: req.body.email,
+          facebookId: req.body.facebookId,
+          photoUrl: req.body.image,
+        };
+        await new recruiterModel(newUser).save();
+        const userDetail = await recruiterModel.findOne({
+          email: req.body.email,
+        });
+        const accessToken = userToken(userDetail);
+        return res.send({ accessToken: accessToken });
+      } else {
+        const userDetail = await recruiterModel.findOne({
+          email: req.body.email,
+        });
+
+        const accessToken = userToken(userDetail);
+        return res.send({ accessToken: accessToken });
+      }
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 exports.tokenResponse = async (req, res) => {
-  console.log(req.body.id);
+
   const recruiter = await recruiterModel.findById(req.body.id);
   const candidate = await candidateModel.findById(req.body.id);
 

@@ -11,6 +11,13 @@ require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 9000;
+var bodyParser = require('body-parser');
+const multer = require("multer");
+var forms = multer();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(forms.array());
 
 app.use(express.json(), cors());
 app.use(candidateRouter, recruiterRouter, jobPostRouter, jobCategoryRouter);

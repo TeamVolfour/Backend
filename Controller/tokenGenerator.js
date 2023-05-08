@@ -23,7 +23,7 @@ exports.userToken = (props) => {
 };
 
 exports.oneTimePassword = (props) => {
-  console.log(props);
+
   var rn = require("random-number");
   const bcrypt = require("bcrypt");
 
@@ -33,7 +33,7 @@ exports.oneTimePassword = (props) => {
     integer: true,
   };
   const customId = rn(options);
-  console.log(customId);
+
 
   const validTokenId = jwt.sign(
     {
