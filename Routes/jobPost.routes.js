@@ -21,7 +21,7 @@ const router = express.Router();
 router
   .get("/jobs", getAllJobs)
   .get("/job/:id", getSingleJob)
-  .post("/jobs", jobMiddleware, postJobs)
+  .post("/jobs", roleMiddleware(301, 302), jobMiddleware, postJobs)
   .post("/job-apply-doc", createApplyDoc)
   .delete("/apply-doc", deleteApplyDoc)
   .post("/user-jobs", getUserJobs)
