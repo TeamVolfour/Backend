@@ -7,7 +7,10 @@ const JobPost = new Schema({
     { type: Schema.Types.ObjectId, required: true, ref: "JobCategory" },
   ],
   companyName: String,
-  bannerImg: String,
+  bannerImg: {
+    type: Buffer,
+    contentType: String,
+  },
   deadline: { type: Date, required: true },
   experience: String,
   location: { type: String, required: true },

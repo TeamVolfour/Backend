@@ -1,6 +1,6 @@
 const { redirect } = require("react-router-dom");
 const { userModel, candidateModel } = require("../Model/candidateModel");
-const { sendValidation, sendToEmail } = require("../functions/sendEmail");
+const { sendValidation, sendToEmail } = require("../functions/emailFunctions");
 const {
   confirmEmail,
   oneTimePassword,
@@ -39,7 +39,6 @@ exports.signupWithFacebook = async (req, res) => {
     facebookId: req.body.facebookId,
   });
   try {
-
     if (!fbId) {
       const newUser = {
         username: req.body.username,
@@ -70,7 +69,6 @@ exports.signupWithGoogle = async (req, res) => {
     googleId: req.body.googleId,
   });
   try {
-
     if (!googleId) {
       const newUser = {
         username: req.body.username,
@@ -113,8 +111,7 @@ exports.cVerifyCompleted = async (req, res) => {
           user.emailConfirmed = true;
           await candidateModel.findByIdAndUpdate(response.id, user);
           return res.redirect(
-            "https://localhost:3000/confirmation/" +
-              confirmToken
+            "https://localhost:3000/confirmation/" + confirmToken
           );
         }
       );

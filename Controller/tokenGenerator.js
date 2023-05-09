@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const {
   sendToMailConfiramtion,
   sendToMailOTP,
-} = require("../functions/sendEmail");
+} = require("../functions/emailFunctions");
 var uniqid = require("uniqid");
 
 exports.userToken = (props) => {
@@ -23,7 +23,6 @@ exports.userToken = (props) => {
 };
 
 exports.oneTimePassword = (props) => {
-
   var rn = require("random-number");
   const bcrypt = require("bcrypt");
 
@@ -33,7 +32,6 @@ exports.oneTimePassword = (props) => {
     integer: true,
   };
   const customId = rn(options);
-
 
   const validTokenId = jwt.sign(
     {

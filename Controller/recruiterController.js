@@ -1,6 +1,4 @@
-const { redirect } = require("react-router-dom");
-const { userModel, candidateModel } = require("../Model/candidateModel");
-const { sendValidation, sendToEmail } = require("../functions/sendEmail");
+const { sendValidation, sendToEmail } = require("../functions/emailFunctions");
 const { confirmEmail, userToken } = require("./tokenGenerator");
 const jwt = require("jsonwebtoken");
 const { recruiterModel } = require("../Model/recruiterModel");
@@ -83,7 +81,6 @@ exports.signupWithGoogle = async (req, res) => {
     googleId: req.body.googleId,
   });
   try {
-
     if (!googleId) {
       const newUser = {
         fullname: {
@@ -118,7 +115,6 @@ exports.signupWithFacebook = async (req, res) => {
     facebookId: req.body.facebookId,
   });
   try {
-
     if (!fbId) {
       const newUser = {
         fullname: {
