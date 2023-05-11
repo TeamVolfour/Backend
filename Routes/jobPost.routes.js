@@ -19,30 +19,6 @@ const {
 
 const router = express.Router();
 
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "Images");
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, file.originalname);
-//   },
-// });
-
-// const fileFilter = (req, file, cb) => {
-//   console.log(file);
-//   const acceptableExtensions = [
-//     "image/png",
-//     "image/jpg",
-//     "image/jpeg",
-//     "image/jpg",
-//   ];
-//   if (acceptableExtensions.includes(file.mimetype)) {
-//     cb(null, true);
-//   } else {
-//     cb(null, false);
-//   }
-// };
-// const upload = multer({ storage, fileFilter });
 router
   .get("/jobs", getAllJobs)
   .get("/job/:id", getSingleJob)

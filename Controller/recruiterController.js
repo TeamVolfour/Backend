@@ -63,8 +63,7 @@ exports.rVerifyCompleted = async (req, res) => {
           user.emailConfirmed = true;
           await recruiterModel.findByIdAndUpdate(response.id, user);
           return res.redirect(
-            "https://volfour-rayethedev-volfour-fe.vercel.app/confirmation/" +
-              confirmToken
+            "https://localhost:3000/confirmation/" + confirmToken
           );
         }
       );

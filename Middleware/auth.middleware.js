@@ -4,7 +4,7 @@ const { recruiterModel } = require("../Model/recruiterModel");
 
 const handleErrors = (err) => {
   console.log(err.message, err.code);
-  let errors = { email: "" };
+  let errors = { email: "", phoneNumber: "" };
   if (err.message.includes("User validation failed")) {
     Object.values(err.errors).forEach(({ properties }) => {
       errors[properties.path] = properties.message;
@@ -35,7 +35,6 @@ exports.signUpCheckCandidate = async (req, res, next) => {
       return;
     } else if (registeredEmail) {
       if (registeredEmail.emailConfirmed == false) {
-
         await candidateModel.findOneAndDelete({
           email: registeredEmail.email,
         });
@@ -57,7 +56,7 @@ exports.signUpCheckRecruiter = async (req, res, next) => {
   const registeredEmail2 = await recruiterModel.findOne({
     email: req.body.email,
   });
-  console.log(req.body)
+  console.log(req.body);
   try {
     if (!req.body.fullname.firstname) {
       return res.status(401).json("Firstname is required");
@@ -69,18 +68,17 @@ exports.signUpCheckRecruiter = async (req, res, next) => {
       return res.status(409).send("That email is already registered");
     } else if (registeredEmail2) {
       if (registeredEmail2.emailConfirmed == false) {
-
         await recruiterModel.findOneAndDelete({
           email: registeredEmail2.email,
         });
         return next();
       }
       return res.status(409).send("That email is already registered");
-    } 
+    }
 
     next();
   } catch (err) {
-    console.log('30111')
+    console.log("30111");
     const errors = handleErrors(err);
     res.status(401).json({ errors });
   }
@@ -92,9 +90,7 @@ exports.signUpCheckCompany = async (req, res, next) => {
   });
 
   try {
-    if (!req.body.email) {
-      return res.status(401).json("Email is required");
-    } else if (!req.body.fullname.firstname) {
+    if (!req.body.fullname.firstname) {
       return res.status(401).json("Firstname is required");
     } else if (!req.body.fullname.lastname) {
       return res.status(401).json("Lastname is required");
@@ -104,7 +100,6 @@ exports.signUpCheckCompany = async (req, res, next) => {
       return res.status(401).json("Company name is required");
     } else if (registeredBussinesEmail) {
       if (registeredEmail.emailConfirmed == false) {
-
         await candidateModel.findOneAndDelete({
           email: registeredEmail.email,
         });
@@ -121,8 +116,9 @@ exports.signUpCheckCompany = async (req, res, next) => {
 
     next();
   } catch (err) {
-
-    res.status(400).json({ message: err });
+    console.log("aldaa");
+    const errors = handleErrors(err);
+    res.status(401).json({ errors });
   }
 };
 

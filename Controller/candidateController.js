@@ -111,7 +111,7 @@ exports.cVerifyCompleted = async (req, res) => {
           user.emailConfirmed = true;
           await candidateModel.findByIdAndUpdate(response.id, user);
           return res.redirect(
-            "https://localhost:3000/confirmation/" + confirmToken
+            "http://localhost:3000/confirmation/" + confirmToken
           );
         }
       );
