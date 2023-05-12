@@ -16,18 +16,19 @@ const {
   createApplyDoc,
   deleteApplyDoc,
 } = require("../Controller/applyDoc.controller");
+const { generateCerti } = require("../functions/generateCertificate");
 
 const router = express.Router();
 
 router
   .get("/jobs", getAllJobs)
   .get("/job/:id", getSingleJob)
-  .post("/jobs", postJobs)
-  // roleMiddleware(301, 302)
+  .post("/jobs", roleMiddleware(301, 302), postJobs)
   .post("/job-apply-doc", createApplyDoc)
   .delete("/apply-doc", deleteApplyDoc)
   .post("/user-jobs", getUserJobs)
   .put("/approve", approvePendingCandidates)
+
   .put("/job-apply", addToPendingApplies)
   .delete("/job/:id", deleteJobPost)
   .delete("/jobs", deleteAllJobPosts);

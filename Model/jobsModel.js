@@ -13,12 +13,15 @@ const JobPost = new Schema({
   },
   deadline: { type: Date, required: true },
   experience: String,
+  candidateLimit: { type: Number, required: true },
   location: { type: String, required: true },
   tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
   creator: { type: Schema.Types.ObjectId, ref: "Recruiter" },
   pendingCandidates: [{ type: Schema.Types.ObjectId, ref: "ApplyDoc" }],
   approvedCandidates: [{ type: Schema.Types.ObjectId, ref: "ApplyDoc" }],
   createdAt: { type: Date, default: Date.now() },
+  isOpen: { type: Boolean, default: true },
+  doneCandidates: [{ type: Schema.Types.ObjectId, ref: "ApplyDoc" }],
 });
 
 const jobPostModel = model("JobPost", JobPost);

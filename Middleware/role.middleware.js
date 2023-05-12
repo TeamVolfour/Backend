@@ -16,11 +16,7 @@ exports.roleMiddleware = (...allowedRoles) => {
       const result = rolesArray.some((role) => {
         return role === user?.roles?.recruiter;
       });
-      // const result = user.roles
-      //   .map((role) => rolesArray.includes(role))
-      // .find((val) => val === true);
 
-      // if (!user.roles.includes(allowedRoles)) return res.status(403).send('Access denied. Forbidden.');
       if (!result) return res.status(403).send("Access denied. Forbidden.");
 
       next();

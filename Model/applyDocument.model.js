@@ -6,11 +6,13 @@ const ApplyDoc = new Schema({
         type: String,
         required: true,
         lowercase: true,
-        unique: true,
-        validate: [isEmail, "Please enter a valid email"],
+
     },
+    userImg: String,
     phoneNumber: { type: Number, minlength: [8, "Please use valid phone number"], required: true },
-    coverLetter: String
+    userId: { type: Schema.Types.ObjectId, ref: "Candidate" },
+    coverLetter: String,
+    createdAt: { type: Date, default: Date.now() }
 });
 
 const ApplyDocModel = model("ApplyDoc", ApplyDoc);

@@ -13,7 +13,7 @@ exports.getAllJobs = async (req, res) => {
       .populate("approvedCandidates")
       .populate("category")
       .populate("creator");
-    res.send(result);
+    return res.send(result);
   } catch (error) {
     res.send(error);
   }
@@ -54,6 +54,7 @@ exports.postJobs = async (req, res) => {
         experience: req.body.experience,
         location: req.body.location,
         tags: req.body.tags,
+        limit: req.body.limit,
         creator: req.body.creator,
         pendingCandidates: req.body.pendingCandidates,
         approvedCandidates: req.body.approvedCandidates,
@@ -96,10 +97,6 @@ exports.getUserJobs = async (req, res) => {
     .populate("category")
     .populate("pendingCandidates")
     .populate("approvedCandidates");
-
-  for (let i = 0; i < allJobs.length; i++) {
-    console.log(allJobs[i].creator);
-  }
 
   const result = allJobs.filter((job) => job.creator.email === req.body.email);
   console.log(result);

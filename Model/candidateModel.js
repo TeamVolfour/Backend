@@ -28,6 +28,9 @@ const Candidate = new Schema({
   },
   facebookId: String,
   googleId: String,
+  certificates: {
+    type: Buffer,
+  },
   personalInformations: Object,
   jobsDone: Number,
 });

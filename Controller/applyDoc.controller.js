@@ -17,6 +17,7 @@ exports.createApplyDoc = async (req, res) => {
       phoneNumber: req.body.phoneNumber,
       name: req.body.name,
       coverLetter: req.body.letter,
+      userId: req.body.userId
     };
     const doc = await new ApplyDocModel(newDoc).save();
     res.send(doc);

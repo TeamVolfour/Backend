@@ -13,13 +13,12 @@ const Recruiter = new Schema({
     type: String,
     required: true,
     lowercase: true,
-    unique: true,
-    validate: [isEmail, "Please enter a valid email"],
+
+    // validate: [isEmail, "Please enter a valid email"],
   },
   bannerImg: String,
   phoneNumber: {
     type: Number,
-    minlength: [8, "Minimum phonenumber length is 8"],
   },
   photoUrl: {
     type: String,
