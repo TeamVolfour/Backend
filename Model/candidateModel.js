@@ -32,7 +32,7 @@ const Candidate = new Schema({
     type: Buffer,
   },
   personalInformations: Object,
-  jobsDone: Number,
+  jobsDone: [{ type: Schema.Types.ObjectId, ref: "JobPost" }],
 });
 
 const candidateModel = model("Candidate", Candidate);

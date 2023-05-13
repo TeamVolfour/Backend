@@ -10,22 +10,18 @@ exports.getApplyDoc = async (req, res) => {
 };
 
 exports.createApplyDoc = async (req, res) => {
-  try {
-    console.log(req.body);
-    const newDoc = {
-      email: req.body.email,
-      phoneNumber: req.body.phoneNumber,
-      name: req.body.name,
-      coverLetter: req.body.letter,
-      userId: req.body.userId
-    };
-    const doc = await new ApplyDocModel(newDoc).save();
-    res.send(doc);
-  } catch (error) {
-    res.status(400).send(error);
-  }
+  console.log(req.body);
+  const newDoc = {
+    email: req.body.email,
+    phoneNumber: req.body.phoneNumber,
+    name: req.body.name,
+    coverLetter: req.body.letter,
+    userId: req.body.userId,
+  };
+  const doc = await new ApplyDocModel(newDoc).save();
+  res.send(doc);
 };
 
 exports.deleteApplyDoc = async (req, res) => {
-  res.send(await ApplyDocModel.findByIdAndDelete(req.body.id));
+  res.send(await ApplyDocModel.deleteMany());
 };
