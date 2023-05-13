@@ -6,7 +6,7 @@ const ApplyDoc = new Schema({
         type: String,
         required: true,
         lowercase: true,
-
+WW
     },
     userImg: String,
     phoneNumber: { type: Number, minlength: [8, "Please use valid phone number"], required: true },
