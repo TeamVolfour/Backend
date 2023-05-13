@@ -1,7 +1,7 @@
 const { userToken } = require("../Controller/tokenGenerator");
 const { userModel, candidateModel } = require("../Model/candidateModel");
 const { recruiterModel } = require("../Model/recruiterModel");
-var validator = require('validator');
+var validator = require("validator");
 
 const handleErrors = (err) => {
   console.log(err.message, err.code);
@@ -29,8 +29,7 @@ exports.signUpCheckCandidate = async (req, res, next) => {
   try {
     if (!req.body.email) {
       return res.status(401).json("Email is required");
-    }
-    else if (!req.body.username) {
+    } else if (!req.body.username) {
       return res.status(401).json("Username is required");
     } else if (alreadyUsername || alreadyUsernameRec) {
       res.status(409).send("That username is already registered");
@@ -43,7 +42,7 @@ exports.signUpCheckCandidate = async (req, res, next) => {
         return next();
       }
       return res.status(409).send("That email is already registered");
-    } 
+    }
     next();
   } catch (err) {
     const errors = handleErrors(err);
@@ -64,8 +63,7 @@ exports.signUpCheckRecruiter = async (req, res, next) => {
       return res.status(401).json("Firstname is required");
     } else if (!validator.isEmail(req.body.email)) {
       return res.status(401).json("Incorrect email");
-    }
-    else if (!req.body.fullname.lastname) {
+    } else if (!req.body.fullname.lastname) {
       return res.status(401).json("Lastname is required");
     } else if (!req.body.email) {
       return res.status(401).json("Email is required");
@@ -90,15 +88,19 @@ exports.signUpCheckRecruiter = async (req, res, next) => {
 };
 
 exports.signUpCheckCompany = async (req, res, next) => {
-
   const registeredBussinesEmail = await recruiterModel.findOne({
     email: req.body.email,
   });
-  const error = { firstname: "", lastame: "", phoneNumber: "", companyName: "", email: "" }
-  console.log(req.body)
+  const error = {
+    firstname: "",
+    lastame: "",
+    phoneNumber: "",
+    companyName: "",
+    email: "",
+  };
+  console.log(req.body);
   try {
     if (!req.body.fullname.firstname) {
-
       return res.status(401).json("Firstname is required");
     } else if (!req.body.fullname.lastname) {
       return res.status(401).json("Lastname is required");
@@ -119,7 +121,6 @@ exports.signUpCheckCompany = async (req, res, next) => {
       }
       return res.status(409).send("That bussines email is already registered");
     } else if (!validator.isEmail(req.body.email)) {
-
       return res.status(401).json("Incorrect email");
     } else if (
       req.body.email.includes("gmail") ||
@@ -127,7 +128,7 @@ exports.signUpCheckCompany = async (req, res, next) => {
       req.body.email.includes("outlook")
     ) {
       return res.status(401).json("Please use bussines email");
-    } 
+    }
 
     next();
   } catch (err) {

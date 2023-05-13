@@ -10,11 +10,11 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 exports.getCandidates = async (req, res) => {
-  const result = await candidateModel.find({});
+  const result = await candidateModel.find({}).populate('certificates');
   res.send(result);
 };
 exports.getCandidate = async (req, res) => {
-  const result = await candidateModel.findById(req.params.id);
+  const result = await candidateModel.findById(req.params.id).populate('certificates');
   res.send(result);
 };
 

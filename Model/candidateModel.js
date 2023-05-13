@@ -28,11 +28,11 @@ const Candidate = new Schema({
   },
   facebookId: String,
   googleId: String,
-  certificates: {
-    type: Buffer,
-  },
+  certificates: [{
+    type: Schema.Types.ObjectId, ref: "Certificate"
+  }],
   personalInformations: Object,
-  jobsDone: Number,
+  jobsDone: [{ type: Schema.Types.ObjectId, ref: "JobPost" }],
 });
 
 const candidateModel = model("Candidate", Candidate);

@@ -26,6 +26,13 @@ app.use(
 app.use(candidateRouter, recruiterRouter, jobPostRouter, jobCategoryRouter);
 connect();
 
+app.use((err, req, res, next) => {
+  res.locals.error = err;
+  const status = err.status || 500;
+  res.status(status);
+  res.render("error");
+});
+
 app.get("/", (req, res) => {
   res.send(
     `Welcome to the Volfour backend - You on the http://localhost:${port}/`

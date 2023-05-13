@@ -11,6 +11,7 @@ exports.getAllJobs = async (req, res) => {
       .find({})
       .populate("pendingCandidates")
       .populate("approvedCandidates")
+      .populate("doneCandidates")
       .populate("category")
       .populate("creator");
     return res.send(result);
@@ -25,6 +26,7 @@ exports.getSingleJob = async (req, res) => {
       .findById(req.params.id)
       .populate("pendingCandidates")
       .populate("approvedCandidates")
+      .populate("doneCandidates")
       .populate("category")
       .populate("creator");
     res.send(result);
@@ -56,15 +58,16 @@ exports.postJobs = async (req, res) => {
         tags: req.body.tags,
         limit: req.body.limit,
         creator: req.body.creator,
+        candidateLimit: req.body.limit,
         pendingCandidates: req.body.pendingCandidates,
         approvedCandidates: req.body.approvedCandidates,
-        bannerImg: fs.readFileSync(
-          path.join(
-            __dirname.substring(0, __dirname.lastIndexOf("/")) +
-              "/Images/" +
-              req.file.filename
-          )
-        ),
+        bannerImg:
+          req.file &&
+          fs.readFileSync(
+            path.join(
+              os.platform() === "win32" ? __dirname.substring(0, __dirname.lastIndexOf("\\")) + "\\Images\\" + req.files.filename : __dirname.substring(0, __dirname.lastIndexOf("/")) + "/Images/" + req.files.filename
+            )
+          ),
       });
 
       jobDoc
@@ -109,7 +112,7 @@ exports.approvePendingCandidates = async (req, res) => {
   const job = await jobPostModel.findOne({ _id: req.body.jobId });
 
   for (let i = 0; i < job.pendingCandidates.length; i++) {
-    if (job.pendingCandidates[0]._id == req.body.appId) {
+    if (job.pendingCandidates[i]._id == req.body.appId) {
       const index = job.pendingCandidates.indexOf();
       job.pendingCandidates.splice(index, 1);
       console.log("removed");
@@ -118,7 +121,79 @@ exports.approvePendingCandidates = async (req, res) => {
   const id = req.body.appId;
   job.approvedCandidates.push(id);
 
-  const result = await jobPostModel.findByIdAndUpdate(req.body.jobId, job);
+  const result = await jobPostModel
+    .findByIdAndUpdate(req.body.jobId, job)
+    .populate("pendingCandidates")
+    .populate("approvedCandidates")
+    .populate("category")
+    .populate("doneCandidates")
+    .populate("creator");
 
   res.send(result);
+};
+
+exports.rejectPendingCandidates = async (req, res) => {
+  const job = await jobPostModel.findOne({ _id: req.body.jobId });
+  for (let i = 0; i < job.pendingCandidates.length; i++) {
+    if (job.pendingCandidates[i]._id == req.body.appId) {
+      const index = job.pendingCandidates.indexOf();
+      job.pendingCandidates.splice(index, 1);
+      console.log("rejected");
+    }
+  }
+  const result = await jobPostModel
+    .findByIdAndUpdate(req.body.jobId, job)
+    .populate("pendingCandidates")
+    .populate("approvedCandidates")
+    .populate("category")
+    .populate("doneCandidates")
+    .populate("creator");
+
+  res.send(result);
+};
+exports.rejectApprovedCandidates = async (req, res) => {
+  const job = await jobPostModel.findOne({ _id: req.body.jobId });
+  for (let i = 0; i < job.approvedCandidates.length; i++) {
+    if (job.approvedCandidates[i]._id == req.body.appId) {
+      const index = job.approvedCandidates.indexOf();
+      job.approvedCandidates.splice(index, 1);
+      console.log("rejected");
+    }
+  }
+  const result = await jobPostModel
+    .findByIdAndUpdate(req.body.jobId, job)
+    .populate("pendingCandidates")
+    .populate("approvedCandidates")
+    .populate("category")
+    .populate("doneCandidates")
+    .populate("creator");
+
+  res.send(result);
+};
+
+exports.addToDoneList = async (req, res) => {
+  try {
+    const job = await jobPostModel.findOne({ _id: req.body.jobId });
+    const id = req.body.appId;
+    job.doneCandidates.push(id);
+    for (let i = 0; i < job.approvedCandidates.length; i++) {
+      if (job.approvedCandidates[i]._id == req.body.appId) {
+        const index = job.approvedCandidates.indexOf();
+        job.approvedCandidates.splice(index, 1);
+        console.log("rejected");
+      }
+    }
+    const appDoc = await ApplyDocModel.findById(req.body.appId);
+    const result = await jobPostModel
+      .findByIdAndUpdate(req.body.jobId, job)
+      .populate("pendingCandidates")
+      .populate("approvedCandidates")
+      .populate("category")
+      .populate("doneCandidates")
+      .populate("creator");
+
+    res.send({ result, appDoc });
+  } catch (err) {
+    console.log(err);
+  }
 };
