@@ -111,7 +111,7 @@ exports.cVerifyCompleted = async (req, res) => {
           user.emailConfirmed = true;
           await candidateModel.findByIdAndUpdate(response.id, user);
           return res.redirect(
-            "http://localhost:3000/confirmation/" + confirmToken
+            "https://volfour-c342d.web.app/confirmation/" + confirmToken
           );
         }
       );
