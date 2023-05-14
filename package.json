@@ -38,6 +38,6 @@
   },
   "homepage": "https://github.com/DemoDay2023/Backend#readme",
   "engines": {
-    "node": ">=14 <17"
+    "node": "19.x"
   }
 }
