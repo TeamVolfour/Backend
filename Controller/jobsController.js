@@ -4,10 +4,8 @@ const { candidateModel } = require("../Model/candidateModel");
 const { jobPostModel } = require("../Model/jobsModel");
 const { upload } = require("../functions/multerFunctions");
 const fs = require("fs");
-const os = require('os');
+const os = require("os");
 const path = require("path");
-
-
 
 exports.getAllJobs = async (req, res) => {
   try {
@@ -69,7 +67,13 @@ exports.postJobs = async (req, res) => {
           req.file &&
           fs.readFileSync(
             path.join(
-              os.platform() === "win32" ? __dirname.substring(0, __dirname.lastIndexOf("\\")) + "\\Images\\" + req.file.filename : __dirname.substring(0, __dirname.lastIndexOf("/")) + "/Images/" + req.file.filename
+              os.platform() === "win32"
+                ? __dirname.substring(0, __dirname.lastIndexOf("\\")) +
+                    "\\Images\\" +
+                    req.file.filename
+                : __dirname.substring(0, __dirname.lastIndexOf("/")) +
+                    "/Images/" +
+                    req.file.filename
             )
           ),
       });
@@ -104,9 +108,10 @@ exports.getUserJobs = async (req, res) => {
     .populate("category")
     .populate("pendingCandidates")
     .populate("approvedCandidates");
+  console.log(allJobs);
 
   const result = allJobs.filter((job) => job.creator.email === req.body.email);
-  console.log(result);
+
   res.send(result);
 };
 exports.deleteAllJobPosts = async (req, res) => {
