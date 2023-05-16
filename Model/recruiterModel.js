@@ -32,6 +32,7 @@ const Recruiter = new Schema({
   googleId: String,
   personalInformations: Object,
   jobsOrganised: Number,
+  companyLocation: String,
 });
 
 const recruiterModel = model("Recruiter", Recruiter);

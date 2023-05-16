@@ -12,18 +12,31 @@ exports.facebookLoginCheck = async (req, res, next) => {
         email: req.body.email,
     });
 
-
     if (req.body.facebookId) {
         if (!registeredEmail && !registeredEmail2) {
-            next();
+            return res.status(409).json("This account not found");
+
         } else {
-            if (registeredEmail.facebookId) {
-                if (registeredEmail.facebookId == req.body.facebookId) {
-                    next();
+            if (registeredEmail) {
+                if (registeredEmail.facebookId) {
+                    if (registeredEmail.facebookId == req.body.facebookId) {
+                        next();
+                    }
+                } else {
+                    return res.status(409).json("This email is already registered");
                 }
-            } else {
-                return res.status(409).json("This email is already registered");
             }
+            if (registeredEmail2) {
+                if (registeredEmail2.facebookId) {
+
+                    if (registeredEmail2.facebookId == req.body.facebookId) {
+                        next();
+                    }
+                } else {
+                    return res.status(409).json("This email is already registered");
+                }
+            }
+
         }
     } else {
         return res.status(401).json("Facebook login failed");
@@ -79,8 +92,8 @@ exports.facebookSignupCheck = async (req, res, next) => {
     const registeredEmail2 = await recruiterModel.findOne({
         email: req.body.email,
     });
-
-
+    console.log('aaaaaaaa')
+    console.log(registeredEmail, registeredEmail2)
     if (req.body.facebookId) {
         if (!registeredEmail && !registeredEmail2) {
             next();

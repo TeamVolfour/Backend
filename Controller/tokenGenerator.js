@@ -52,6 +52,7 @@ exports.confirmEmail = (props) => {
   const emailConfirm = jwt.sign(
     {
       id: props.id,
+      roles: props.roles
     },
     process.env.TOKEN_SECRET || "emailSecret123",
     {
@@ -59,9 +60,9 @@ exports.confirmEmail = (props) => {
     }
   );
   if (props.roles.recruiter || props.roles.admin || props.roles.company) {
-    url = `https://volfour.onrender.com/recruiter/confirmation/${emailConfirm}`;
+    url = `http://localhost:9000/confirmation/recruiter/${emailConfirm}`;
   } else if (props.roles.candidate) {
-    url = `https://volfour.onrender.com/candidate/confirmation/${emailConfirm}`;
+    url = `http://localhost:9000/candidate/confirmation/${emailConfirm}`;
   }
 
   const dispatch = {

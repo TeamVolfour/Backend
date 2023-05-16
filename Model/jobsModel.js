@@ -18,13 +18,13 @@ const JobPost = new Schema({
   tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
   creator: { type: Schema.Types.ObjectId, ref: "Recruiter" },
   pendingCandidates: [
-    { type: Schema.Types.ObjectId, ref: "ApplyDoc", unique: true },
+    { type: Schema.Types.ObjectId, ref: "ApplyDoc", },
   ],
   approvedCandidates: [
-    { type: Schema.Types.ObjectId, ref: "ApplyDoc", unique: true },
+    { type: Schema.Types.ObjectId, ref: "ApplyDoc", },
   ],
   doneCandidates: [
-    { type: Schema.Types.ObjectId, ref: "ApplyDoc", unique: true },
+    { type: Schema.Types.ObjectId, ref: "ApplyDoc", },
   ],
   createdAt: { type: Date, default: Date.now() },
   isOpen: { type: Boolean, default: true },

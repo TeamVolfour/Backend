@@ -28,8 +28,8 @@ router
   .get("/recruiter/:id", getRecruiter)
   .post("/signup/recruiter-person", signUpCheckRecruiter, createRecruiter)
   .post("/signup/recruiter-company", signUpCheckCompany, createCompany)
-  .post("/login/google/recruiter", googleSignupCheck2, signupWithGoogle)
-  .post("/login/fb/recruiter", facebookSignupCheck2, signupWithFacebook)
+  .post("/signup/google/recruiter", googleSignupCheck2, signupWithGoogle)
+  .post("/signup/fb/recruiter", facebookSignupCheck2, signupWithFacebook)
   .post("/login/recruiter", loginCheck)
   .get("/recruiter/confirmation/:id", rVerifyCompleted)
   .delete("/recruiters", deleteAllRecruiter);

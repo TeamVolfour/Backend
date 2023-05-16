@@ -21,7 +21,10 @@ exports.getCandidate = async (req, res) => {
 exports.createCandidate = async (req, res) => {
   try {
     const newUser = {
-      username: req.body.username,
+      fullname: {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname
+      },
       email: req.body.email,
       roles: req.body.roles,
     };
@@ -41,7 +44,10 @@ exports.signupWithFacebook = async (req, res) => {
   try {
     if (!fbId) {
       const newUser = {
-        username: req.body.username,
+        fullname: {
+          firstname: req.body.firstname,
+          lastname: req.body.lastname
+        },
         email: req.body.email,
         roles: req.body.role,
         facebookId: req.body.facebookId,
@@ -71,7 +77,10 @@ exports.signupWithGoogle = async (req, res) => {
   try {
     if (!googleId) {
       const newUser = {
-        username: req.body.username,
+        fullname: {
+          firstname: req.body.firstname,
+          lastname: req.body.lastname
+        },
         email: req.body.email,
         googleId: req.body.googleId,
         photoUrl: req.body.image,
@@ -111,7 +120,7 @@ exports.cVerifyCompleted = async (req, res) => {
           user.emailConfirmed = true;
           await candidateModel.findByIdAndUpdate(response.id, user);
           return res.redirect(
-            "https://volfour-c342d.web.app/confirmation/" + confirmToken
+            "http://localhost:3000/confirmation/" + confirmToken
           );
         }
       );

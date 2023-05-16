@@ -2,13 +2,11 @@ const { Schema, model, Types, SchemaTypes } = require("mongoose");
 const { isEmail } = require("validator");
 
 const Candidate = new Schema({
-  username: {
-    type: String,
-    required: true,
-    minlength: [6, "Minimum username length is 6 character"],
-  },
+  fullname: {
   firstname: String,
   lastname: String,
+  },
+
   email: {
     type: String,
     required: true,
@@ -32,6 +30,7 @@ const Candidate = new Schema({
     type: Schema.Types.ObjectId, ref: "Certificate"
   }],
   personalInformations: Object,
+
   jobsDone: [{ type: Schema.Types.ObjectId, ref: "JobPost" }],
 });
 

@@ -42,8 +42,6 @@ exports.otpCheck = async (req, res) => {
         process.env.TOKEN_SECRET || "emailSecret123",
         async function (err, response) {
           if (err) return res.send(err);
-
-
           if (req.body.otp == response.token) {
             console.log("matched");
 
@@ -53,7 +51,7 @@ exports.otpCheck = async (req, res) => {
             const recruiter = await recruiterModel.findById({
               _id: response._id,
             });
-            console.log(candidate, recruiter);
+
             if (candidate) {
               const token = userToken(candidate);
               return res.status(200).json({ accessToken: token });
@@ -148,7 +146,7 @@ exports.loginWithGoogle = async (req, res) => {
 
 exports.loginWithFacebook = async (req, res) => {
   const facebookId = await candidateModel.findOne({
-    googleId: req.body.googleId,
+    facebookId: req.body.facebookId,
   });
 
   const candidate = await candidateModel.findOne({
@@ -226,8 +224,11 @@ exports.tokenResponse = async (req, res) => {
     if (recruiter) {
       const token = userToken({
         email: recruiter.email,
-        username: recruiter.username,
-        organization: recruiter.organizationName,
+        fullname: {
+          firstname: recruiter.fullname.firstname,
+          lastname: recruiter.fullname.lastname
+        },
+        companyName: recruiter.companyName,
         roles: recruiter.roles,
         photoUrl: recruiter.photoUrl,
         id: recruiter._id,
@@ -236,7 +237,10 @@ exports.tokenResponse = async (req, res) => {
     } else {
       const token = userToken({
         email: candidate.email,
-        username: candidate.username,
+        fullname: {
+          firstname: candidate.fullname.firstname,
+          lastname: candidate.fullname.lastname
+        },
         roles: candidate.roles,
         photoUrl: candidate.photoUrl,
         id: candidate._id,

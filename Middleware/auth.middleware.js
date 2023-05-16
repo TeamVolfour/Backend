@@ -16,9 +16,7 @@ const handleErrors = (err) => {
 };
 
 exports.signUpCheckCandidate = async (req, res, next) => {
-  const alreadyUsername = await candidateModel.findOne({
-    username: req.body.username,
-  });
+
   const registeredEmail = await candidateModel.findOne({
     email: req.body.email,
   });
@@ -29,11 +27,8 @@ exports.signUpCheckCandidate = async (req, res, next) => {
   try {
     if (!req.body.email) {
       return res.status(401).json("Email is required");
-    } else if (!req.body.username) {
-      return res.status(401).json("Username is required");
-    } else if (alreadyUsername || alreadyUsernameRec) {
-      res.status(409).send("That username is already registered");
-      return;
+    } else if (!req.body.fullname.firstname && !req.body.fullname.lastname) {
+      return res.status(401).json("Fullname is required");
     } else if (registeredEmail) {
       if (registeredEmail.emailConfirmed == false) {
         await candidateModel.findOneAndDelete({
