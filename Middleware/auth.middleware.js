@@ -20,6 +20,9 @@ exports.signUpCheckCandidate = async (req, res, next) => {
   const registeredEmail = await candidateModel.findOne({
     email: req.body.email,
   });
+  const registeredEmail2 = await recruiterModel.findOne({
+    email: req.body.email,
+  });
   const alreadyUsernameRec = await recruiterModel.findOne({
     username: req.body.username,
   });
@@ -27,8 +30,11 @@ exports.signUpCheckCandidate = async (req, res, next) => {
   try {
     if (!req.body.email) {
       return res.status(401).json("Email is required");
-    } else if (!req.body.fullname.firstname && !req.body.fullname.lastname) {
+    } else if (!req.body.fullname.firstname || !req.body.fullname.lastname) {
       return res.status(401).json("Fullname is required");
+
+    } else if (registeredEmail2) {
+      return res.status(409).json("That email is already registered");
     } else if (registeredEmail) {
       if (registeredEmail.emailConfirmed == false) {
         await candidateModel.findOneAndDelete({

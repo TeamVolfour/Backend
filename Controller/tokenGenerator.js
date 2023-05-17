@@ -71,7 +71,7 @@ exports.confirmEmail = (props) => {
       firstname: props.fullname.firstname,
       lastname: props.fullname.lastname
     },
-    company: props.companyName,
+    companyName: props.companyName,
     id: id,
     url: url,
   };

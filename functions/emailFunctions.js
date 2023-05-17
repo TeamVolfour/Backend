@@ -6,11 +6,12 @@ const { promisify } = require("util");
 
 const readFile = promisify(fs.readFile);
 const sendToMailConfiramtion = async (props) => {
+
+  console.log(props)
   try {
     var transporter = nodemailer.createTransport({
       port: 587,
       host: "smtp.gmail.com",
-
       auth: {
         user: process.env.GMAIL,
         pass: process.env.GMAIL_PASSWORD,
