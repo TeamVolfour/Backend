@@ -29,10 +29,20 @@ const Recruiter = new Schema({
   roles: { type: Object, default: { recruiter: 301 } },
   badges: Object,
   facebookId: String,
+  companyLocation: String,
   googleId: String,
   personalInformations: Object,
-  jobsOrganised: Number,
+  jobsOrganised: [{ type: Schema.Types.ObjectId, ref: "JobPost" }],
+  blogs: [{ type: Schema.Types.ObjectId, ref: "Blog" }],
   companyLocation: String,
+  socialInformations: {
+    websiteUrl: String,
+    facebook: String,
+    instagram: String,
+    Twitter: String
+  },
+  createdAt: { type: Date, default: Date.now() },
+
 });
 
 const recruiterModel = model("Recruiter", Recruiter);

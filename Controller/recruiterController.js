@@ -16,7 +16,10 @@ exports.getRecruiter = async (req, res) => {
 exports.createRecruiter = async (req, res) => {
   try {
     const newUser = {
-      username: req.body.username,
+      fullname: {
+        firstname: req.body.fullname.firstname,
+        lastname: req.body.fullname.lastname
+      },
       organizationName: req.body.organization,
       email: req.body.email,
       roles: req.body.roles,

@@ -30,8 +30,14 @@ const Candidate = new Schema({
     type: Schema.Types.ObjectId, ref: "Certificate"
   }],
   personalInformations: Object,
-
+  socialInformations: {
+    facebook: String,
+    instagram: String,
+    Twitter: String
+  },
   jobsDone: [{ type: Schema.Types.ObjectId, ref: "JobPost" }],
+  createdAt: { type: Date, default: Date.now() },
+
 });
 
 const candidateModel = model("Candidate", Candidate);

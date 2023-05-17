@@ -60,14 +60,17 @@ exports.confirmEmail = (props) => {
     }
   );
   if (props.roles.recruiter || props.roles.admin || props.roles.company) {
-    url = `http://localhost:9000/confirmation/recruiter/${emailConfirm}`;
+    url = `http://localhost:9000/recruiter/confirmation/${emailConfirm}`;
   } else if (props.roles.candidate) {
     url = `http://localhost:9000/candidate/confirmation/${emailConfirm}`;
   }
 
   const dispatch = {
     email: props.email,
-    name: props.username ? props.username : props.fullname,
+    fullname: {
+      firstname: props.fullname.firstname,
+      lastname: props.fullname.lastname
+    },
     company: props.companyName,
     id: id,
     url: url,

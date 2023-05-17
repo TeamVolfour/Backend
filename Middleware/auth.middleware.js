@@ -56,10 +56,11 @@ exports.signUpCheckRecruiter = async (req, res, next) => {
   try {
     if (!req.body.fullname.firstname) {
       return res.status(401).json("Firstname is required");
-    } else if (!validator.isEmail(req.body.email)) {
-      return res.status(401).json("Incorrect email");
     } else if (!req.body.fullname.lastname) {
       return res.status(401).json("Lastname is required");
+    }
+    else if (!validator.isEmail(req.body.email)) {
+      return res.status(401).json("Incorrect email");
     } else if (!req.body.email) {
       return res.status(401).json("Email is required");
     } else if (registeredEmail) {
