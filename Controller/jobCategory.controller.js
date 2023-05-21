@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
     cb(null, "Images");
   },
   filename: (req, file, cb) => {
-    console.log(file);
+
     var tempFileArr = file.originalname.split(".");
     var tempFileName = tempFileArr[0];
     var tempFileExtension = tempFileArr[1];

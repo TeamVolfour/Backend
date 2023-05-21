@@ -19,7 +19,7 @@ exports.getCandidate = async (req, res) => {
 };
 
 exports.createCandidate = async (req, res) => {
-  console.log(req.body)
+
   try {
     const newUser = {
       fullname: {
@@ -46,8 +46,8 @@ exports.signupWithFacebook = async (req, res) => {
     if (!fbId) {
       const newUser = {
         fullname: {
-          firstname: req.body.firstname,
-          lastname: req.body.lastname
+          firstname: req.body.fullname.firstname,
+          lastname: req.body.fullname.lastname
         },
         email: req.body.email,
         roles: req.body.role,
@@ -79,8 +79,8 @@ exports.signupWithGoogle = async (req, res) => {
     if (!googleId) {
       const newUser = {
         fullname: {
-          firstname: req.body.firstname,
-          lastname: req.body.lastname
+          firstname: req.body.fullname.firstname,
+          lastname: req.body.fullname.lastname
         },
         email: req.body.email,
         googleId: req.body.googleId,

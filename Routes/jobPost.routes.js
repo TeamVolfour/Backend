@@ -19,7 +19,6 @@ const {
   createApplyDoc,
   deleteApplyDoc,
 } = require("../Controller/applyDoc.controller");
-const { generateCerti } = require("../functions/generateCertificate");
 const { giveCertificate, getCertificate } = require("../Controller/certificate.controller");
 
 const router = express.Router();
@@ -27,8 +26,7 @@ const router = express.Router();
 router
   .get("/jobs", getAllJobs)
   .get("/job/:id", getSingleJob)
-  .post("/jobs", postJobs)
-  // roleMiddleware(301, 302)
+  .post("/jobs", roleMiddleware(301, 302), postJobs)
   .post("/job-apply-doc", createApplyDoc)
   .delete("/apply-doc", deleteApplyDoc)
   .post("/user-jobs", getUserJobs)

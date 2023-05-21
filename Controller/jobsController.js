@@ -6,6 +6,7 @@ const { upload } = require("../functions/multerFunctions");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
+const { log } = require("console");
 
 exports.getAllJobs = async (req, res) => {
   try {
@@ -41,13 +42,9 @@ exports.postJobs = async (req, res) => {
   try {
     upload(req, res, (err) => {
       if (err) return console.log(err);
-      console.log(err);
-      console.log(req.body.title);
+
       console.log(
-        req.file &&
-          __dirname.substring(0, __dirname.lastIndexOf("/")) +
-            "/Images/" +
-            req.file.filename
+        req.file
       );
       const jobDoc = new jobPostModel({
         title: req.body.title,
@@ -108,8 +105,8 @@ exports.getUserJobs = async (req, res) => {
     .populate("category")
     .populate("pendingCandidates")
     .populate("approvedCandidates");
-  console.log(allJobs);
 
+  console.log(allJobs);
   const result = allJobs.filter((job) => job.creator.email === req.body.email);
 
   res.send(result);
@@ -124,7 +121,7 @@ exports.approvePendingCandidates = async (req, res) => {
     if (job.pendingCandidates[i]._id == req.body.appId) {
       const index = job.pendingCandidates.indexOf();
       job.pendingCandidates.splice(index, 1);
-      console.log("removed");
+
     }
   }
   const id = req.body.appId;
@@ -147,7 +144,7 @@ exports.rejectPendingCandidates = async (req, res) => {
     if (job.pendingCandidates[i]._id == req.body.appId) {
       const index = job.pendingCandidates.indexOf();
       job.pendingCandidates.splice(index, 1);
-      console.log("rejected");
+
     }
   }
   const result = await jobPostModel
@@ -166,7 +163,7 @@ exports.rejectApprovedCandidates = async (req, res) => {
     if (job.approvedCandidates[i]._id == req.body.appId) {
       const index = job.approvedCandidates.indexOf();
       job.approvedCandidates.splice(index, 1);
-      console.log("rejected");
+
     }
   }
   const result = await jobPostModel
@@ -189,7 +186,7 @@ exports.addToDoneList = async (req, res) => {
       if (job.approvedCandidates[i]._id == req.body.appId) {
         const index = job.approvedCandidates.indexOf();
         job.approvedCandidates.splice(index, 1);
-        console.log("rejected");
+
       }
     }
     const appDoc = await ApplyDocModel.findById(req.body.appId);

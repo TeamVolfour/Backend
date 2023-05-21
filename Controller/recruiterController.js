@@ -146,6 +146,32 @@ exports.signupWithFacebook = async (req, res) => {
   }
 };
 
+
+exports.updateRecruiter = async (req, res) => {
+  const body = req.body
+  const id = req.params.id
+  try {
+    const user = await recruiterModel.findById(id)
+    user.fullname.firstname = body.firstname
+    user.fullname.lastname = body.lastname
+    // user.email = body.email
+    user.phoneNumber = body.phoneNumber
+    user.socialInformations.websiteUrl = body.websiteUrl
+    user.socialInformations.facebook = body.facebook
+    user.socialInformations.instagram = body.instagram
+    user.socialInformations.twitter = body.twitter
+    user.personalInformations = body.personalInformations
+    user.location = body.location
+    const result = await recruiterModel.findByIdAndUpdate(id, user)
+    res.send(result)
+
+  } catch (err) {
+    res.send(err);
+
+  }
+}
+
 exports.deleteAllRecruiter = async (req, res) => {
   res.send(await recruiterModel.deleteMany());
 };
+

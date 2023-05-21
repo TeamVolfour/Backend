@@ -5,10 +5,9 @@ const Blog = new Schema({
   category: [
     { type: Schema.Types.ObjectId, required: true, ref: "BlogCategory" },
   ],
-  bannerImg: String,
+  bannerImg: Buffer,
   comment: [{ type: Schema.Types.ObjectId, ref: "BlogComment" }],
-  tags: { type: Schema.Types.ObjectId, ref: "Tags" },
-  creatorId: Schema.Types.ObjectId,
+  creatorId: { type: Schema.Types.ObjectId, ref: "Recruiter" },
   createdAt: { type: Date, default: Date.now() },
 });
 

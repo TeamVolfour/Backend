@@ -15,9 +15,9 @@ exports.giveCertificate = async (req, res) => {
 
 exports.getCertificate = async (req, res) => {
   try {
-    // console.log(req.body)
+
     const certi = await CertificateModel.findById(req.params.id).populate("jobId")
-    console.log(certi)
+
     res.send(certi)
   } catch (err) {
     console.log(err)

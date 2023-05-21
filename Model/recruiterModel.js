@@ -39,7 +39,7 @@ const Recruiter = new Schema({
     websiteUrl: String,
     facebook: String,
     instagram: String,
-    Twitter: String
+    twitter: String
   },
   createdAt: { type: Date, default: Date.now() },
 

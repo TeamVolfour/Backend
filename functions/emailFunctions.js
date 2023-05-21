@@ -7,7 +7,7 @@ const { promisify } = require("util");
 const readFile = promisify(fs.readFile);
 const sendToMailConfiramtion = async (props) => {
 
-  console.log(props)
+
   try {
     var transporter = nodemailer.createTransport({
       port: 587,
@@ -29,7 +29,7 @@ const sendToMailConfiramtion = async (props) => {
     };
 
     transporter.use("compile", hbs(handlebarOptions));
-    console.log(__dirname);
+
     var mailOptions = {
       from: process.env.GMAIL,
       to: props.email,
@@ -54,7 +54,7 @@ const sendToMailConfiramtion = async (props) => {
 };
 
 const sendToMailOTP = async (props) => {
-  console.log(props, "otp mail");
+
   try {
     var transporter = nodemailer.createTransport({
       service: "gmail",

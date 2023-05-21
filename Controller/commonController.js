@@ -77,12 +77,9 @@ exports.loginWithGoogle = async (req, res) => {
   const googleId = await candidateModel.findOne({
     googleId: req.body.googleId,
   });
-
   const candidate = await candidateModel.findOne({
     email: req.body.email,
   });
-
-
   const googleId2 = await recruiterModel.findOne({
     googleId: req.body.googleId,
   });
@@ -91,18 +88,8 @@ exports.loginWithGoogle = async (req, res) => {
 
     if (candidate) {
       if (!googleId) {
-        const newUser = {
-          username: req.body.username,
-          email: req.body.email,
-          googleId: req.body.googleId,
-          photoUrl: req.body.image,
-        };
-        await new candidateModel(newUser).save();
-        const userDetail = await candidateModel.findOne({
-          email: req.body.email,
-        });
-        const accessToken = userToken(userDetail);
-        return res.send({ accessToken: accessToken });
+        return res.status(401).send('This account not found')
+
       } else {
         const userDetail = await candidateModel.findOne({
           email: req.body.email,
@@ -113,23 +100,8 @@ exports.loginWithGoogle = async (req, res) => {
       }
     } else {
       if (!googleId2) {
-        const newUser = {
-          fullname: {
-            firstname: req.body.username,
-            lastname: req.body.username
+        return res.status(401).send('This account not found')
 
-          },
-          email: req.body.email,
-          googleId: req.body.googleId,
-          photoUrl: req.body.image,
-        };
-        await new recruiterModel(newUser).save();
-        const userDetail = await recruiterModel.findOne({
-          email: req.body.email,
-        });
-        const accessToken = userToken(userDetail);
-        return res.send({ accessToken: accessToken });
-      } else {
         const userDetail = await recruiterModel.findOne({
           email: req.body.email,
         });
@@ -162,18 +134,7 @@ exports.loginWithFacebook = async (req, res) => {
 
     if (candidate) {
       if (!facebookId) {
-        const newUser = {
-          username: req.body.username,
-          email: req.body.email,
-          facebookId: req.body.facebookId,
-          photoUrl: req.body.image,
-        };
-        await new candidateModel(newUser).save();
-        const userDetail = await candidateModel.findOne({
-          email: req.body.email,
-        });
-        const accessToken = userToken(userDetail);
-        return res.send({ accessToken: accessToken });
+        return res.status(401).send('This account not found')
       } else {
         const userDetail = await candidateModel.findOne({
           email: req.body.email,
@@ -184,22 +145,8 @@ exports.loginWithFacebook = async (req, res) => {
       }
     } else {
       if (!facebookId2) {
-        const newUser = {
-          fullname: {
-            firstname: req.body.username,
-            lastname: req.body.username
+        return res.status(401).send('This account not found')
 
-          },
-          email: req.body.email,
-          facebookId: req.body.facebookId,
-          photoUrl: req.body.image,
-        };
-        await new recruiterModel(newUser).save();
-        const userDetail = await recruiterModel.findOne({
-          email: req.body.email,
-        });
-        const accessToken = userToken(userDetail);
-        return res.send({ accessToken: accessToken });
       } else {
         const userDetail = await recruiterModel.findOne({
           email: req.body.email,

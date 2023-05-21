@@ -4,6 +4,8 @@ const { connect } = require("./config/db/db");
 const { candidateRouter } = require("./Routes/candidateRoutes");
 const { recruiterRouter } = require("./Routes/recruiterRoutes");
 const { jobPostRouter } = require("./Routes/jobPost.routes");
+const { blogRouter } = require("./Routes/blog.routes");
+
 const { JobCategoryModel } = require("./Model/jobCategory.model");
 const { jobCategoryRouter } = require("./Routes/jobCategory.routes");
 
@@ -23,7 +25,7 @@ app.use(
     extended: true,
   })
 );
-app.use(candidateRouter, recruiterRouter, jobPostRouter, jobCategoryRouter);
+app.use(candidateRouter, recruiterRouter, jobPostRouter, jobCategoryRouter, blogRouter);
 connect();
 
 app.use((err, req, res, next) => {
