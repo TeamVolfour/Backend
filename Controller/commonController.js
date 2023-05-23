@@ -102,6 +102,7 @@ exports.loginWithGoogle = async (req, res) => {
       if (!googleId2) {
         return res.status(401).send('This account not found')
 
+      } else {
         const userDetail = await recruiterModel.findOne({
           email: req.body.email,
         });
