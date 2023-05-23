@@ -16,6 +16,7 @@ const sendToMailConfiramtion = async (props) => {
         user: process.env.GMAIL,
         pass: process.env.GMAIL_PASSWORD,
       },
+      secure: true
     });
 
     const handlebarOptions = {
@@ -41,13 +42,41 @@ const sendToMailConfiramtion = async (props) => {
         url: props.url,
       },
     };
-    await transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
+    // await transporter.sendMail(mailOptions, function (error, info) {
+    //   if (error) {
+    //     console.log(error);
+    //   } else {
+    //     console.log("Email sent: " + info.response);
+    //   }
+    // });
+    await new Promise((resolve, reject) => {
+      // verify connection configuration
+      transporter.verify(function (error, success) {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          console.log("Server is ready to take our messages");
+          resolve(success);
+        }
+      });
     });
+
+    await new Promise((resolve, reject) => {
+      // send mail
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          console.log(info);
+          resolve(info);
+        }
+      });
+    });
+
+    res.status(200).json({ status: "OK" });
+
   } catch (error) {
     console.log(error);
   }
@@ -62,6 +91,7 @@ const sendToMailOTP = async (props) => {
         user: process.env.GMAIL,
         pass: process.env.GMAIL_PASSWORD,
       },
+      secure: true
     });
 
     const handlebarOptions = {
@@ -85,13 +115,41 @@ const sendToMailOTP = async (props) => {
         password: props.otp,
       },
     };
-    await transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
+    // await transporter.sendMail(mailOptions, function (error, info) {
+    //   if (error) {
+    //     console.log(error);
+    //   } else {
+    //     console.log("Email sent: " + info.response);
+    //   }
+    // });
+
+    await new Promise((resolve, reject) => {
+      // verify connection configuration
+      transporter.verify(function (error, success) {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          console.log("Server is ready to take our messages");
+          resolve(success);
+        }
+      });
     });
+    await new Promise((resolve, reject) => {
+      // send mail
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          console.log(info);
+          resolve(info);
+        }
+      });
+    });
+
+    res.status(200).json({ status: "OK" });
+
   } catch (error) {
     console.log(error);
   }
