@@ -60,9 +60,9 @@ exports.confirmEmail = (props) => {
     }
   );
   if (props.roles.recruiter || props.roles.admin || props.roles.company) {
-    url = `http://localhost:9000/recruiter/confirmation/${emailConfirm}`;
+    url = `https://volfour-be.vercel.app/recruiter/confirmation/${emailConfirm}`;
   } else if (props.roles.candidate) {
-    url = `http://localhost:9000/candidate/confirmation/${emailConfirm}`;
+    url = `https://volfour-be.vercel.app/candidate/confirmation/${emailConfirm}`;
   }
 
   const dispatch = {
