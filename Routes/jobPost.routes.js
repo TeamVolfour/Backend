@@ -12,6 +12,7 @@ const {
   rejectPendingCandidates,
   addToDoneList,
   rejectApprovedCandidates,
+  closeJob,
 } = require("../Controller/jobsController");
 const { jobMiddleware } = require("../Middleware/job.middleware");
 const { roleMiddleware } = require("../Middleware/role.middleware");
@@ -37,6 +38,7 @@ router
   .post("/certificate", giveCertificate)
   .get("/certificate/:id", getCertificate)
   .put("/job-apply", addToPendingApplies)
+  .put("/close/:id", closeJob)
   .delete("/job/:id", deleteJobPost)
   .delete("/jobs", deleteAllJobPosts);
 

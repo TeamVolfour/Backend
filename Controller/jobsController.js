@@ -55,7 +55,7 @@ exports.postJobs = async (req, res) => {
         experience: req.body.experience,
         location: req.body.location,
         tags: req.body.tags,
-        limit: req.body.limit,
+        candidateLimit: req.body.limit,
         creator: req.body.creator,
         candidateLimit: req.body.limit,
         pendingCandidates: req.body.pendingCandidates,
@@ -95,7 +95,8 @@ exports.addToPendingApplies = async (req, res) => {
   res.send(result);
 };
 exports.deleteJobPost = async (req, res) => {
-  res.send(await jobPostModel.findByIdAndDelete(req.params.id));
+  const job = await jobPostModel.findByIdAndDelete(req.params.id)
+  res.send('Successfully deleted');
 };
 
 exports.getUserJobs = async (req, res) => {
@@ -203,3 +204,16 @@ exports.addToDoneList = async (req, res) => {
     console.log(err);
   }
 };
+
+exports.closeJob = async (req, res) => {
+  try {
+    const id = req.params.id
+    const job = await jobPostModel.findById(id)
+    job.isOpen = false
+    const result = await jobPostModel.findByIdAndUpdate(id, job)
+    res.send(result)
+  } catch (err) {
+    console.log(err);
+  }
+};
+

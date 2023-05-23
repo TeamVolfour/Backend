@@ -92,8 +92,8 @@ exports.facebookSignupCheck = async (req, res, next) => {
     const registeredEmail2 = await recruiterModel.findOne({
         email: req.body.email,
     });
-    console.log('aaaaaaaa')
-    console.log(registeredEmail, registeredEmail2)
+
+    // console.log(registeredEmail, registeredEmail2)
     if (req.body.facebookId) {
         if (!registeredEmail && !registeredEmail2) {
             next();

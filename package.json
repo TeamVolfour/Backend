@@ -38,6 +38,7 @@
   },
   "homepage": "https://github.com/DemoDay2023/Backend#readme",
   "engines": {
-    "node": "18.x"
+    "node": "18.x",
+    "npm": "9.6.6"
   }
 }

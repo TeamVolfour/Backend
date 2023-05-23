@@ -50,7 +50,6 @@ exports.signupWithFacebook = async (req, res) => {
           lastname: req.body.fullname.lastname
         },
         email: req.body.email,
-        roles: req.body.role,
         facebookId: req.body.facebookId,
         photoUrl: req.body.image,
       };
@@ -67,7 +66,7 @@ exports.signupWithFacebook = async (req, res) => {
       return res.send({ accessToken: accessToken });
     }
   } catch (error) {
-    console.log(error);
+    console.log('aldaa');
   }
 };
 
@@ -81,6 +80,7 @@ exports.signupWithGoogle = async (req, res) => {
         fullname: {
           firstname: req.body.fullname.firstname,
           lastname: req.body.fullname.lastname
+
         },
         email: req.body.email,
         googleId: req.body.googleId,
@@ -121,7 +121,7 @@ exports.cVerifyCompleted = async (req, res) => {
           user.emailConfirmed = true;
           await candidateModel.findByIdAndUpdate(response.id, user);
           return res.redirect(
-            "http://localhost:3000/confirmation/" + confirmToken
+            "https://volfour-fe-eight.vercel.app/confirmation/" + confirmToken
           );
         }
       );

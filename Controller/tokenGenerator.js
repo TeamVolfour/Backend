@@ -39,7 +39,7 @@ exports.oneTimePassword = (props) => {
       token: customId,
     },
     process.env.TOKEN_SECRET || "emailSecret123",
-    { expiresIn: "5m" }
+    { expiresIn: "15m" }
   );
   sendToMailOTP({ email: props.email, otp: customId });
   return validTokenId;
@@ -56,7 +56,7 @@ exports.confirmEmail = (props) => {
     },
     process.env.TOKEN_SECRET || "emailSecret123",
     {
-      expiresIn: "8m",
+      expiresIn: "15m",
     }
   );
   if (props.roles.recruiter || props.roles.admin || props.roles.company) {
