@@ -4,7 +4,6 @@ const hbs = require("nodemailer-express-handlebars");
 const fs = require("fs");
 const { promisify } = require("util");
 
-const readFile = promisify(fs.readFile);
 const sendToMailConfiramtion = async (props) => {
 
 
@@ -75,7 +74,7 @@ const sendToMailConfiramtion = async (props) => {
       });
     });
 
-    res.status(200).json({ status: "OK" });
+
 
   } catch (error) {
     console.log(error);
@@ -148,7 +147,7 @@ const sendToMailOTP = async (props) => {
       });
     });
 
-    res.status(200).json({ status: "OK" });
+
 
   } catch (error) {
     console.log(error);
