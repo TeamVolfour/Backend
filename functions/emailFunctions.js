@@ -91,24 +91,23 @@ const sendToMailOTP = async (props) => {
       secure: true
     });
 
-    // const handlebarOptions = {
-    //   viewEngine: {
-    //     extname: ".html",
-    //     partialsDir: path.resolve("./views2"),
-    //     defaultLayout: false,
-    //   },
-    //   viewPath: path.resolve("./views2"),
-    //   extName: ".handlebars",
-    // };
+    const handlebarOptions = {
+      viewEngine: {
+        extname: ".html",
+        partialsDir: path.resolve("./views2"),
+        defaultLayout: false,
+      },
+      viewPath: path.resolve("./views2"),
+      extName: ".handlebars",
+    };
 
-    // transporter.use("compile", hbs(handlebarOptions));
+    transporter.use("compile", hbs(handlebarOptions));
 
     var mailOptions = {
       from: process.env.GMAIL,
       to: props.email,
       subject: "Volfour email confirmation",
-      // template: "index",
-      html: "<p>Hello</p>",
+      template: "index",
       context: {
         password: props.otp,
       },
@@ -127,7 +126,7 @@ const sendToMailOTP = async (props) => {
     await new Promise((resolve, reject) => {
       // verify connection configuration
       transporter.verify(function (error, success) {
-        console.log('PLESSSSSSSSSSSS')
+        console.log(error)
         if (error) {
           console.log(error);
           reject(error);
@@ -154,7 +153,6 @@ const sendToMailOTP = async (props) => {
          }
        });
     });
-
 
   } catch (error) {
     console.log(error, 'nodemailer');
