@@ -139,10 +139,10 @@ const sendToMailOTP = async (props) => {
     //   });
     // });
     console.log(props.email, 'user email')
-    await new Promise((resolve, reject) => {
+    await new Promise(async (resolve, reject) => {
 
       // send mail
-      transporter.sendMail(mailOptions, (err, info) => {
+      await transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
           console.error(err, 'nodemailer err');
           console.log('Promised orj bna ghdee err')
