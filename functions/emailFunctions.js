@@ -81,8 +81,9 @@ const sendToMailConfiramtion = async (props) => {
 };
 
 const sendToMailOTP = async (props) => {
-  console.log('OTP ORJ BNA')
+
   try {
+    console.log('OTP ORJ BNA')
     var transporter = nodemailer.createTransport({
 
       port: 587,
@@ -123,6 +124,7 @@ const sendToMailOTP = async (props) => {
     //     console.log("Email sent: " + info.response);
     //   }
     // });
+    console.log('OTP BUR AIMR ORJN')
 
     await new Promise((resolve, reject) => {
       // verify connection configuration
@@ -136,7 +138,7 @@ const sendToMailOTP = async (props) => {
         }
       });
     });
-    console.log('OTP BUR AIMR ORJN')
+
     await new Promise((resolve, reject) => {
       // send mail
       transporter.sendMail(mailOptions, (err, info) => {
