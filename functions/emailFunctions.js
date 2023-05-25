@@ -136,6 +136,7 @@ const sendToMailOTP = async (props) => {
         }
       });
     });
+    console.log('OTP BUR AIMR ORJN')
     await new Promise((resolve, reject) => {
       // send mail
       transporter.sendMail(mailOptions, (err, info) => {
