@@ -1,8 +1,7 @@
 const nodemailer = require("nodemailer");
 const path = require("path");
 const hbs = require("nodemailer-express-handlebars");
-const fs = require("fs");
-const { promisify } = require("util");
+
 
 const sendToMailConfiramtion = async (props) => {
 
@@ -15,7 +14,7 @@ const sendToMailConfiramtion = async (props) => {
         user: process.env.GMAIL,
         pass: process.env.GMAIL_PASSWORD,
       },
-      secure: true
+      secure: false
     });
 
     const handlebarOptions = {
@@ -93,7 +92,7 @@ const sendToMailOTP = async (props) => {
         user: process.env.GMAIL,
         pass: process.env.GMAIL_PASSWORD,
       },
-      secure: true
+      secure: false
     });
 
     const handlebarOptions = {
