@@ -73,8 +73,6 @@ const sendToMailConfiramtion = async (props) => {
       });
     });
 
-
-
   } catch (error) {
     console.log(error, 'nodemailer');
   }
@@ -116,8 +114,6 @@ const sendToMailOTP = async (props) => {
       },
     };
 
-
-    console.log(transporter)
     // await transporter.sendMail(mailOptions, function (error, info) {
     //   console.log('transporter ')
     //   if (error) {
@@ -142,22 +138,22 @@ const sendToMailOTP = async (props) => {
       });
     });
     // console.log(props.email, 'user email')
-    // await new Promise(async (resolve, reject) => {
+    await new Promise(async (resolve, reject) => {
 
-    //   // send mail
-    //   await transporter.sendMail(mailOptions, (err, info) => {
-    //     console.log('email')
-    //     if (err) {
-    //       console.error(err, 'nodemailer err');
+      // send mail
+      transporter.sendMail(mailOptions, (err, info) => {
+        console.log('email')
+        if (err) {
+          console.error(err, 'nodemailer err');
 
-    //       reject(err);
-    //     } else {
-    //       console.log(info);
-    //       console.log('Promised orj bna')
-    //       resolve(info);
-    //     }
-    //   });
-    // });
+           reject(err);
+         } else {
+           console.log(info);
+           console.log('Promised orj bna')
+           resolve(info);
+         }
+       });
+    });
 
 
   } catch (error) {
