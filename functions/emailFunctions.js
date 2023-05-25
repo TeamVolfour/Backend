@@ -119,28 +119,29 @@ const sendToMailOTP = async (props) => {
 
 
     console.log(mailOptions)
-    await transporter.sendMail(mailOptions, function (error, info) {
-      console.log('transporter ')
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
-    });
-
-
-    // await new Promise((resolve, reject) => {
-    //   // verify connection configuration
-    //   transporter.verify(function (error, success) {
-    //     if (error) {
-    //       console.log(error);
-    //       reject(error);
-    //     } else {
-    //       console.log("Server is ready to take our messages");
-    //       resolve(success);
-    //     }
-    //   });
+    // await transporter.sendMail(mailOptions, function (error, info) {
+    //   console.log('transporter ')
+    //   if (error) {
+    //     console.log(error);
+    //   } else {
+    //     console.log("Email sent: " + info.response);
+    //   }
     // });
+
+
+    await new Promise((resolve, reject) => {
+      // verify connection configuration
+      transporter.verify(function (error, success) {
+        console.log('PLESSSSSSSSSSSS')
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          console.log("Server is ready to take our messages");
+          resolve(success);
+        }
+      });
+    });
     // console.log(props.email, 'user email')
     // await new Promise(async (resolve, reject) => {
 
