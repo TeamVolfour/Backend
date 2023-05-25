@@ -118,7 +118,7 @@ const sendToMailOTP = async (props) => {
 
 
     console.log(mailOptions)
-    await transporter.sendMail(mailOptions, function (error, info) {
+    transporter.sendMail(mailOptions, function (error, info) {
       console.log('transporter ')
       if (error) {
         console.log(error);
