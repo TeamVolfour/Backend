@@ -86,7 +86,7 @@ const sendToMailOTP = async (props) => {
 
     var transporter = nodemailer.createTransport({
       port: 587,
-      host: "smtp.gmail.com",
+      service: "gmail",
       auth: {
         user: process.env.GMAIL,
         pass: process.env.GMAIL_PASSWORD,
@@ -94,23 +94,24 @@ const sendToMailOTP = async (props) => {
       secure: true
     });
 
-    const handlebarOptions = {
-      viewEngine: {
-        extname: ".html",
-        partialsDir: path.resolve("./views2"),
-        defaultLayout: false,
-      },
-      viewPath: path.resolve("./views2"),
-      extName: ".handlebars",
-    };
+    // const handlebarOptions = {
+    //   viewEngine: {
+    //     extname: ".html",
+    //     partialsDir: path.resolve("./views2"),
+    //     defaultLayout: false,
+    //   },
+    //   viewPath: path.resolve("./views2"),
+    //   extName: ".handlebars",
+    // };
 
-    transporter.use("compile", hbs(handlebarOptions));
+    // transporter.use("compile", hbs(handlebarOptions));
 
     var mailOptions = {
       from: process.env.GMAIL,
       to: props.email,
       subject: "Volfour email confirmation",
-      template: "index",
+      // template: "index",
+      html: "<p>Hello</p>",
       context: {
         password: props.otp,
       },
@@ -118,7 +119,7 @@ const sendToMailOTP = async (props) => {
 
 
     console.log(mailOptions)
-    transporter.sendMail(mailOptions, function (error, info) {
+    await transporter.sendMail(mailOptions, function (error, info) {
       console.log('transporter ')
       if (error) {
         console.log(error);
