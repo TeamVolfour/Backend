@@ -76,12 +76,12 @@ const sendToMailConfiramtion = async (props) => {
 
 
   } catch (error) {
-    console.log(error);
+    console.log(error, 'nodemailer');
   }
 };
 
 const sendToMailOTP = async (props) => {
-
+  console.log('OTP ORJ BNA')
   try {
     var transporter = nodemailer.createTransport({
 
@@ -140,7 +140,7 @@ const sendToMailOTP = async (props) => {
       // send mail
       transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
-          console.error(err);
+          console.error(err, 'nodemailer err');
           reject(err);
         } else {
           console.log(info);
@@ -152,7 +152,7 @@ const sendToMailOTP = async (props) => {
 
 
   } catch (error) {
-    console.log(error);
+    console.log(error, 'nodemailer');
   }
 };
 
