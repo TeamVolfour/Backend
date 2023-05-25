@@ -85,15 +85,13 @@ const sendToMailOTP = async (props) => {
   try {
 
     var transporter = nodemailer.createTransport({
-
       port: 587,
-
       host: "smtp.gmail.com",
       auth: {
         user: process.env.GMAIL,
         pass: process.env.GMAIL_PASSWORD,
       },
-      secure: false
+      secure: true
     });
 
     const handlebarOptions = {
@@ -117,13 +115,14 @@ const sendToMailOTP = async (props) => {
         password: props.otp,
       },
     };
-    // await transporter.sendMail(mailOptions, function (error, info) {
-    //   if (error) {
-    //     console.log(error);
-    //   } else {
-    //     console.log("Email sent: " + info.response);
-    //   }
-    // });
+    await transporter.sendMail(mailOptions, function (error, info) {
+      console.log('transporter ')
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
 
 
     // await new Promise((resolve, reject) => {
@@ -139,22 +138,22 @@ const sendToMailOTP = async (props) => {
     //   });
     // });
     console.log(props.email, 'user email')
-    await new Promise(async (resolve, reject) => {
+    // await new Promise(async (resolve, reject) => {
 
-      // send mail
-      await transporter.sendMail(mailOptions, (err, info) => {
-        console.log('email')
-        if (err) {
-          console.error(err, 'nodemailer err');
+    //   // send mail
+    //   await transporter.sendMail(mailOptions, (err, info) => {
+    //     console.log('email')
+    //     if (err) {
+    //       console.error(err, 'nodemailer err');
 
-          reject(err);
-        } else {
-          console.log(info);
-          console.log('Promised orj bna')
-          resolve(info);
-        }
-      });
-    });
+    //       reject(err);
+    //     } else {
+    //       console.log(info);
+    //       console.log('Promised orj bna')
+    //       resolve(info);
+    //     }
+    //   });
+    // });
 
     console.log('OTP BUR AIMR ORJN')
 
