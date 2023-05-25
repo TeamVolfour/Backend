@@ -115,6 +115,9 @@ const sendToMailOTP = async (props) => {
         password: props.otp,
       },
     };
+
+
+    console.log(mailOptions)
     await transporter.sendMail(mailOptions, function (error, info) {
       console.log('transporter ')
       if (error) {
@@ -137,7 +140,7 @@ const sendToMailOTP = async (props) => {
     //     }
     //   });
     // });
-    console.log(props.email, 'user email')
+    // console.log(props.email, 'user email')
     // await new Promise(async (resolve, reject) => {
 
     //   // send mail
@@ -155,7 +158,6 @@ const sendToMailOTP = async (props) => {
     //   });
     // });
 
-    console.log('OTP BUR AIMR ORJN')
 
   } catch (error) {
     console.log(error, 'nodemailer');
