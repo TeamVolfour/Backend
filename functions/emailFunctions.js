@@ -138,16 +138,18 @@ const sendToMailOTP = async (props) => {
     //     }
     //   });
     // });
-
+    console.log(props.email, 'user email')
     await new Promise((resolve, reject) => {
-      console.log('Promised orj bna')
+
       // send mail
       transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
           console.error(err, 'nodemailer err');
+          console.log('Promised orj bna ghdee err')
           reject(err);
         } else {
           console.log(info);
+          console.log('Promised orj bna')
           resolve(info);
         }
       });
