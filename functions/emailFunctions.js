@@ -86,6 +86,7 @@ const sendToMailOTP = async (props) => {
   try {
     var transporter = nodemailer.createTransport({
       service: "gmail",
+      host: "smtp.gmail.com",
       auth: {
         user: process.env.GMAIL,
         pass: process.env.GMAIL_PASSWORD,
