@@ -84,11 +84,12 @@ const sendToMailOTP = async (props) => {
 
     var transporter = nodemailer.createTransport({
       service: "gmail",
+      host: "smtp.gmail.com",
       auth: {
         user: process.env.GMAIL,
         pass: process.env.GMAIL_PASSWORD,
       },
-      secure: true
+
     });
 
     const handlebarOptions = {
@@ -126,7 +127,7 @@ const sendToMailOTP = async (props) => {
     await new Promise((resolve, reject) => {
       // verify connection configuration
       transporter.verify(function (error, success) {
-        console.log(error)
+
         if (error) {
           console.log(error);
           reject(error);
@@ -137,14 +138,13 @@ const sendToMailOTP = async (props) => {
       });
     });
     // console.log(props.email, 'user email')
-    await new Promise(async (resolve, reject) => {
+    await new Promise((resolve, reject) => {
 
       // send mail
       transporter.sendMail(mailOptions, (err, info) => {
         console.log('email')
         if (err) {
           console.error(err, 'nodemailer err');
-
            reject(err);
          } else {
            console.log(info);
