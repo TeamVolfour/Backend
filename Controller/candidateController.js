@@ -30,7 +30,7 @@ exports.createCandidate = async (req, res) => {
       roles: req.body.roles,
     };
     const user = await new candidateModel(newUser).save();
-    const confirmToken = confirmEmail(user);
+    const confirmToken = await confirmEmail(user);
 
     return res.send({ confirmationToken: confirmToken });
   } catch (error) {

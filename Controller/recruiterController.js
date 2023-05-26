@@ -26,7 +26,7 @@ exports.createRecruiter = async (req, res) => {
     };
     const user = await new recruiterModel(newUser).save();
 
-    const confirmToken = confirmEmail(user);
+    const confirmToken = await confirmEmail(user);
 
     return res.send({ confirmationToken: confirmToken });
   } catch (error) {
@@ -47,7 +47,7 @@ exports.createCompany = async (req, res) => {
   };
   const company = await new recruiterModel(newCompany).save();
 
-  const confirmToken = confirmEmail(company);
+  const confirmToken = await confirmEmail(company);
   return res.send({ confirmationToken: confirmToken });
 };
 exports.rVerifyCompleted = async (req, res) => {

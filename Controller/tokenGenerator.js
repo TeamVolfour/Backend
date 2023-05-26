@@ -44,7 +44,7 @@ exports.oneTimePassword = async (props) => {
   return validTokenId;
 };
 
-exports.confirmEmail = (props) => {
+exports.confirmEmail = async (props) => {
   const id = uniqid();
   var url;
   const port = process.env.PORT || 9000;
@@ -74,7 +74,7 @@ exports.confirmEmail = (props) => {
     id: id,
     url: url,
   };
-  sendToMailConfiramtion(dispatch);
+  await sendToMailConfiramtion(dispatch);
 
   return emailConfirm;
 };
