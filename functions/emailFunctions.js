@@ -39,13 +39,7 @@ const sendToMailConfiramtion = async (props) => {
         url: props.url,
       },
     };
-    // await transporter.sendMail(mailOptions, function (error, info) {
-    //   if (error) {
-    //     console.log(error);
-    //   } else {
-    //     console.log("Email sent: " + info.response);
-    //   }
-    // });
+
     await new Promise((resolve, reject) => {
       // verify connection configuration
       transporter.verify(function (error, success) {
