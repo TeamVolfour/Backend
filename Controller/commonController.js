@@ -9,6 +9,7 @@ const jwt = require("jsonwebtoken");
 exports.login = async (req, res) => {
   const candidate = await candidateModel.findOne({ email: req.body.email });
   const recruiter = await recruiterModel.findOne({ email: req.body.email });
+
   try {
     if (candidate) {
       const otpToken = await oneTimePassword({
@@ -19,7 +20,7 @@ exports.login = async (req, res) => {
     }
 
     if (recruiter) {
-      const otpToken = oneTimePassword({
+      const otpToken = await oneTimePassword({
         id: recruiter._id,
         email: recruiter.email,
       });

@@ -24,7 +24,6 @@ exports.userToken = (props) => {
 
 exports.oneTimePassword = async (props) => {
   var rn = require("random-number");
-  const bcrypt = require("bcrypt");
 
   var options = {
     min: 000001,
