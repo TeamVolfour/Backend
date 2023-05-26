@@ -33,8 +33,8 @@ const sendToMailConfiramtion = async (props) => {
       to: props.email,
       subject: "Volfour email confirmation",
       preheader: `Hi ${props.name}! Your email confirmation has been sent to you.`,
-      template: "index",
-      // html: `<p>Сайн байна уу?<p><p>Та <a href="${props.url}">энэ</a>  дээр дарж хаягаа баталгаажуулна уу<p>`,
+      // template: "index",
+      html: `<p>Сайн байна уу?<p><p>Та <a href="${props.url}">энэ</a>  дээр дарж хаягаа баталгаажуулна уу<p>`,
       context: {
         url: props.url,
       },
