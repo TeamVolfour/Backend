@@ -37,8 +37,8 @@ exports.createRecruiter = async (req, res) => {
 exports.createCompany = async (req, res) => {
   const newCompany = {
     fullname: {
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
+      firstname: req.body.fullname.firstname,
+      lastname: req.body.fullname.lastname,
     },
     companyName: req.body.company,
     phoneNumber: req.body.phoneNumber,
