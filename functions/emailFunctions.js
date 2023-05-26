@@ -5,7 +5,6 @@ const hbs = require("nodemailer-express-handlebars");
 
 const sendToMailConfiramtion = async (props) => {
 
-
   try {
     var transporter = nodemailer.createTransport({
       port: 587,

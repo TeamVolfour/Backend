@@ -22,7 +22,7 @@ exports.userToken = (props) => {
   return accessToken;
 };
 
-exports.oneTimePassword = (props) => {
+exports.oneTimePassword = async (props) => {
   var rn = require("random-number");
   const bcrypt = require("bcrypt");
 
@@ -41,7 +41,7 @@ exports.oneTimePassword = (props) => {
     process.env.TOKEN_SECRET || "emailSecret123",
     { expiresIn: "15m" }
   );
-  sendToMailOTP({ email: props.email, otp: customId });
+  await sendToMailOTP({ email: props.email, otp: customId });
   return validTokenId;
 };
 

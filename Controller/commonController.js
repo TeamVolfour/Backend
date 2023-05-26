@@ -4,12 +4,14 @@ const { oneTimePassword, userToken } = require("./tokenGenerator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+
+
 exports.login = async (req, res) => {
   const candidate = await candidateModel.findOne({ email: req.body.email });
   const recruiter = await recruiterModel.findOne({ email: req.body.email });
   try {
     if (candidate) {
-      const otpToken = oneTimePassword({
+      const otpToken = await oneTimePassword({
         id: candidate._id,
         email: candidate.email,
       });
