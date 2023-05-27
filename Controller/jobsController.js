@@ -43,9 +43,9 @@ exports.postJobs = async (req, res) => {
     upload(req, res, (err) => {
       if (err) return console.log(err);
 
-      console.log(
-        req.file
-      );
+      // console.log(
+      //   req.file
+      // );
       console.log(__dirname.substring(0, __dirname.lastIndexOf("\\")) +
         "\\Images\\", 'dir')
       const jobDoc = new jobPostModel({
