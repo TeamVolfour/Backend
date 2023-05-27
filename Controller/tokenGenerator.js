@@ -6,10 +6,10 @@ const {
 var uniqid = require("uniqid");
 
 exports.userToken = (props) => {
-  console.log(props)
+
   const accessToken = jwt.sign(
     {
-      id: props.id,
+      id: props._id,
       email: props.email,
       organization: props.organizationName,
       emailConfirmed: props.emailConfirmed,
