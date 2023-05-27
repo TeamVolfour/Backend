@@ -57,6 +57,7 @@ exports.signupWithFacebook = async (req, res) => {
       await new candidateModel(newUser).save();
 
       const accessToken = userToken(newUser);
+      console.log(newUser)
       return res.send({ accessToken: accessToken });
     } else {
       const userDetail = await candidateModel.findOne({
