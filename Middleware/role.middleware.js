@@ -14,7 +14,7 @@ exports.roleMiddleware = (...allowedRoles) => {
       if (!user) return res.status(401).send("Access denied. Invalid token.");
       const rolesArray = [...allowedRoles];
       const result = rolesArray.some((role) => {
-        return role === user?.roles?.recruiter;
+        return role === user?.roles?.recruiter || role === user?.roles?.company
       });
 
       if (!result) return res.status(403).send("Access denied. Forbidden.");
