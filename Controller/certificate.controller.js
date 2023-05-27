@@ -4,7 +4,7 @@ const { CertificateModel } = require("../Model/certificateModel");
 exports.giveCertificate = async (req, res) => {
   const candidate = await candidateModel.findById(req.body.id);
   if (candidate) {
-    const certificate = await new CertificateModel({ holder: candidate._id, jobId: req.body.jobId, holderName: candidate.username }).save();
+    const certificate = await new CertificateModel({ holder: candidate._id, jobId: req.body.jobId, holderFullName: { firstname: candidate.fullname.firstname, lastname: candidate.fullname.lastname } }).save();
 
     candidate.certificates.push(certificate._id)
     const result = await candidateModel.findByIdAndUpdate(candidate._id, candidate)
