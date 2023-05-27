@@ -54,9 +54,9 @@ exports.signupWithFacebook = async (req, res) => {
         photoUrl: req.body.image,
       };
 
-      await new candidateModel(newUser).save();
+      const user = await new candidateModel(newUser).save();
 
-      const accessToken = userToken(newUser);
+      const accessToken = userToken(user);
       console.log(newUser)
       return res.send({ accessToken: accessToken });
     } else {
