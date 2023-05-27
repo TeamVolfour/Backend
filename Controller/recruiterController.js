@@ -20,7 +20,7 @@ exports.createRecruiter = async (req, res) => {
         firstname: req.body.fullname.firstname,
         lastname: req.body.fullname.lastname
       },
-      organizationName: req.body.organization,
+
       email: req.body.email,
       roles: req.body.roles,
     };
@@ -35,6 +35,7 @@ exports.createRecruiter = async (req, res) => {
 };
 
 exports.createCompany = async (req, res) => {
+  console.log(req.body)
   const newCompany = {
     fullname: {
       firstname: req.body.fullname.firstname,

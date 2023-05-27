@@ -110,7 +110,7 @@ exports.signUpCheckCompany = async (req, res, next) => {
       return res.status(401).json("Phone number is required");
     } else if (req.body.phoneNumber.length !== 8) {
       return res.status(401).json("Incorrect phone number");
-    } else if (!req.body.companyName) {
+    } else if (!req.body.company) {
       return res.status(401).json("Company name is required");
     } else if (!req.body.email) {
       return res.status(401).json("Bussiness email is required");
