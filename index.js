@@ -24,7 +24,7 @@ app.use(
     extended: true,
   })
 );
-app.use('./netlify/functions', candidateRouter, recruiterRouter, jobPostRouter, jobCategoryRouter, blogRouter);
+app.use(candidateRouter, recruiterRouter, jobPostRouter, jobCategoryRouter, blogRouter);
 connect();
 
 
