@@ -6,7 +6,6 @@ const { recruiterRouter } = require("./Routes/recruiterRoutes");
 const { jobPostRouter } = require("./Routes/jobPost.routes");
 const { blogRouter } = require("./Routes/blog.routes");
 
-const { JobCategoryModel } = require("./Model/jobCategory.model");
 const { jobCategoryRouter } = require("./Routes/jobCategory.routes");
 
 require("dotenv").config();
@@ -25,8 +24,9 @@ app.use(
     extended: true,
   })
 );
-app.use(candidateRouter, recruiterRouter, jobPostRouter, jobCategoryRouter, blogRouter);
+app.use('./netlify/functions', candidateRouter, recruiterRouter, jobPostRouter, jobCategoryRouter, blogRouter);
 connect();
+
 
 app.use((err, req, res, next) => {
   res.locals.error = err;
