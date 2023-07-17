@@ -23,7 +23,7 @@ exports.facebookLoginCheck = async (req, res, next) => {
                         next();
                     }
                 } else {
-                    return res.status(409).json("This email is already registered");
+                    return res.status(409).json("This email is registered as other method");
                 }
             }
             if (registeredEmail2) {
@@ -33,7 +33,7 @@ exports.facebookLoginCheck = async (req, res, next) => {
                         next();
                     }
                 } else {
-                    return res.status(409).json("This email is already registered");
+                    return res.status(409).json("This email is registered as other method");
                 }
             }
 
@@ -61,7 +61,7 @@ exports.googleLoginCheck = async (req, res, next) => {
                         next();
                     }
                 } else {
-                    return res.status(409).json("This email is already registered");
+                    return res.status(409).json("This email is registered as other method");
                 }
             }
             if (registeredEmail2) {
@@ -70,7 +70,7 @@ exports.googleLoginCheck = async (req, res, next) => {
                         next();
                     }
                 } else {
-                    return res.status(409).json("This email is already registered");
+                    return res.status(409).json("This email is registered as other method");
                 }
             }
 
